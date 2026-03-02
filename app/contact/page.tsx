@@ -24,10 +24,10 @@ export default function ContactPage() {
         <div className="space-y-4">
           {/* Email 按鈕 */}
           <a 
-            href="mailto:mookie.kanji@gmail.com" 
+            href="mailto:Nexkanji@gmail.com" 
             className="flex items-center justify-center w-full px-6 py-4 rounded-xl bg-slate-900 text-white font-medium hover:bg-slate-800 transition-colors"
           >
-            <span className="mr-3">✉️</span> mookie.kanji@gmail.com
+            <span className="mr-3">✉️</span> Nexkanji@gmail.com
           </a>
 
           {/* Instagram 按鈕 */}
