@@ -1,3 +1,4 @@
+// components/Navbar.tsx
 import Link from 'next/link';
 
 export default function Navbar() {
@@ -32,7 +33,10 @@ export default function Navbar() {
 
         <div className="flex items-center gap-4">
           <Link
-            href="#newsletter"
+            // 🌟 這裡未來換成你的真實電子報訂閱網址 (如 Beehiiv, ConvertKit)
+            // 如果你打算在網站內做一個專屬頁面，可以改成 href="/newsletter" 然後把 target="_blank" 拿掉
+           href="/newsletter" 
+            rel="noopener noreferrer" // 前端資安考量：防止外部網站控制你的分頁
             className="hidden md:inline-flex items-center justify-center rounded-full bg-slate-900 px-5 py-2 text-sm font-medium text-white shadow-sm hover:bg-slate-800 transition-colors"
           >
             Join Newsletter
