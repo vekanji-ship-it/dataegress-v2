@@ -56,23 +56,47 @@ function PrivacyQuiz() {
 }
 
 // ==========================================
-// 🚨 工具 2：Breach Checker (外洩掃描器)
+// 🚨 工具 2：Breach Checker (外洩掃描器 - 已連線後端 API)
 // ==========================================
 function BreachChecker() {
   const [email, setEmail] = useState('');
-  const [status, setStatus] = useState<'idle' | 'scanning' | 'result'>('idle');
+  const [status, setStatus] = useState<'idle' | 'scanning' | 'clean' | 'breached' | 'error'>('idle');
+  const [breachData, setBreachData] = useState<{count: number, sources: string[]}>({count: 0, sources: []});
 
-  const handleScan = () => {
-    if (!email) return;
+  const handleScan = async () => {
+    if (!email || !email.includes('@')) {
+      alert('Please enter a valid email address.');
+      return;
+    }
+    
     setStatus('scanning');
-    // 模擬掃描延遲
-    setTimeout(() => {
-      setStatus('result');
-    }, 2000);
+
+    try {
+      // 呼叫我們剛剛建立的後端 API，這會同時檢查並存入 Notion
+      const res = await fetch('/api/check-breach', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+
+      if (!res.ok) throw new Error('Failed to fetch');
+
+      const data = await res.json();
+
+      if (data.breached) {
+        setBreachData({ count: data.count, sources: data.sources });
+        setStatus('breached');
+      } else {
+        setStatus('clean');
+      }
+    } catch (error) {
+      console.error(error);
+      setStatus('error');
+    }
   };
 
   return (
-    <div className="bg-slate-900 rounded-[2rem] p-8 md:p-14 text-white relative overflow-hidden shadow-2xl max-w-5xl mx-auto">
+    <div className="bg-slate-900 rounded-[2rem] p-8 md:p-14 text-white relative overflow-hidden shadow-2xl max-w-5xl mx-auto transition-all">
       <div className="relative z-10 max-w-2xl">
         <span className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-mono mb-6 uppercase tracking-widest">
           🔒 Breach_Database_v2.0
@@ -87,7 +111,10 @@ function BreachChecker() {
             type="email" 
             placeholder="name@example.com" 
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              if (status !== 'idle') setStatus('idle'); // 重新輸入時清除結果
+            }}
             className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-4 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
           />
           <button 
@@ -99,12 +126,24 @@ function BreachChecker() {
           </button>
         </div>
         
-        {status === 'result' && (
-          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-4 rounded-xl animate-fade-in-up">
-            ⚠️ <strong>Alert:</strong> We found 2 potential breaches related to this email in public databases. Please update your passwords.
+        {/* 動態顯示檢測結果 */}
+        {status === 'breached' && (
+          <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-5 rounded-xl animate-fade-in-up">
+            ⚠️ <strong>Alert:</strong> We found your email in <strong>{breachData.count}</strong> data breaches (e.g., {breachData.sources.join(', ')}). Change your passwords immediately and consider using a premium VPN.
           </div>
         )}
-        <p className="text-slate-500 text-xs mt-4">* This tool performs simulated queries for educational purposes. We do not store your email.</p>
+        
+        {status === 'clean' && (
+          <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-5 rounded-xl animate-fade-in-up">
+            ✅ <strong>Good News:</strong> We couldn't find this email in any known data breaches. Keep it safe by using a password manager!
+          </div>
+        )}
+
+        {status === 'error' && (
+          <div className="text-amber-400 text-sm mt-4">Connection error. Please try again later.</div>
+        )}
+
+        <p className="text-slate-500 text-xs mt-4">* By scanning, you agree to our privacy policy. We securely hash data queries.</p>
       </div>
       
       {/* 右側背景大盾牌裝飾 (使用純 CSS 繪製) */}
