@@ -1,4 +1,7 @@
 // lib/notion.ts
+import { Client } from '@notionhq/client';
+import { NotionToMarkdown } from 'notion-to-md';
+
 export interface SaaSTool {
   id: string;
   name: string;
@@ -11,10 +14,18 @@ export interface SaaSTool {
   videoUrl: string | null;
   pros: string[];
   cons: string[];
+  content?: string; // 🌟 新增這個屬性，用來存放文章內容
 }
 
+// 🌟 初始化 Notion 官方客戶端 (專門用來轉 Markdown)
+const notionClient = new Client({
+  auth: process.env.NOTION_API_KEY || "",
+});
+const n2m = new NotionToMarkdown({ notionClient: notionClient });
+
+
+// 原本你寫好的完美 Fetch 寫法
 export async function getSaaSTools(): Promise<SaaSTool[]> {
-  // 🧹 1. 自動清理字串 (去除可能不小心複製到的空格或 ?v= 參數)
   const rawDbId = process.env.NOTION_DATABASE_ID || "";
   const rawApiKey = process.env.NOTION_API_KEY || "";
   const databaseId = rawDbId.trim().split('?')[0]; 
@@ -34,26 +45,20 @@ export async function getSaaSTools(): Promise<SaaSTool[]> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        // 🚨 【診斷模式】：我們先暫時註解掉過濾器，看看是不是 Status 欄位格式的問題
-        /*
         filter: {
           property: 'Status',
           status: { equals: 'Published' },
         },
-        */
         sorts: [
           { property: 'Rating', direction: 'descending' },
         ],
       }),
-      // 為了除錯，我們暫時不快取，確保每次重整都是最新狀態
       cache: 'no-store' 
     });
 
     if (!response.ok) {
-      // 🌟 2. 攔截最原始的錯誤文字，絕對不會再顯示 {}
       const errorText = await response.text();
       console.error("❌ Notion API 原始錯誤訊息：", errorText);
-      console.error("👉 正在嘗試讀取的 Database ID 為：", databaseId);
       return [];
     }
 
@@ -78,5 +83,17 @@ export async function getSaaSTools(): Promise<SaaSTool[]> {
   } catch (error) {
     console.error("❌ 系統發生預期外的錯誤:", error);
     return [];
+  }
+}
+
+// 🌟 新增的魔法：抓取 Notion 頁面正文並轉成 Markdown
+export async function getNotionPageContent(pageId: string) {
+  try {
+    const mdblocks = await n2m.pageToMarkdown(pageId);
+    const mdString = n2m.toMarkdownString(mdblocks);
+    return mdString.parent || ""; // 確保即使沒有內容也回傳空字串
+  } catch (error) {
+    console.error("❌ 轉換 Markdown 失敗:", error);
+    return "";
   }
 }

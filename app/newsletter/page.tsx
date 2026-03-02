@@ -1,43 +1,115 @@
-// app/newsletter/page.tsx
-export default function NewsletterPage() {
+// app/comparisons/[slug]/page.tsx
+import { getSaaSTools, getNotionPageContent } from '@/lib/notion';
+import SchemaInjector from '@/components/SchemaInjector';
+import VideoHero from '@/components/VideoHero';
+import ComparisonTable from '@/components/ComparisonTable';
+import ReactMarkdown from 'react-markdown'; // 🌟 引入 Markdown 渲染器
+
+const competitorData: Record<string, any> = {
+  "snov-io-vs-lemlist-2026-review": {
+    name: "Lemlist",
+    price: "From $59/mo",
+    url: "#",
+    features: [
+      { name: "Cold Email Drip Campaigns", included: true },
+      { name: "Email Finder Extension", included: false },
+      { name: "Built-in CRM", included: false },
+    ]
+  },
+  "semrush-vs-se-ranking": {
+    name: "SE Ranking",
+    price: "From $55/mo",
+    url: "#",
+    features: [
+      { name: "Keyword Tracking", included: true },
+      { name: "Competitor Analysis", included: true },
+      { name: "Site Audit", included: true },
+    ]
+  }
+};
+
+export default async function ComparisonArticle({ params }: { params: Promise<{ slug: string }> }) {
+  const resolvedParams = await params;
+  const currentSlug = resolvedParams.slug;
+
+  const allTools = await getSaaSTools();
+  const productA_Notion = allTools.find(tool => tool.slug === currentSlug);
+
+  if (!productA_Notion) {
+    return (
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-8">
+        <div className="bg-white p-10 rounded-2xl shadow-xl max-w-2xl w-full text-center">
+          <span className="text-4xl mb-4 block">🕵️‍♂️</span>
+          <h1 className="text-2xl font-bold text-red-600 mb-4">找不到對應的 Slug</h1>
+          <p className="text-lg text-slate-700 mb-2">
+            網址輸入的 Slug 是：<code className="bg-red-100 text-red-800 px-2 py-1 rounded">{currentSlug}</code>
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // 🌟 關鍵：去 Notion 把長篇文章抓下來
+  const markdownContent = await getNotionPageContent(productA_Notion.id);
+
+  const productB_Data = competitorData[currentSlug] || {
+    name: "Competitor",
+    price: "Varies",
+    url: "#",
+    features: [
+      { name: "Feature 1", included: true },
+      { name: "Feature 2", included: false },
+    ]
+  };
+
+  const productA = {
+    name: productA_Notion.name,
+    price: productA_Notion.pricing,
+    url: productA_Notion.affiliateUrl,
+    isWinner: true,
+    features: productA_Notion.pros.length > 0 
+      ? productA_Notion.pros.map(pro => ({ name: pro, included: true }))
+      : [
+          { name: "Core Feature 1", included: true },
+          { name: "Core Feature 2", included: true },
+        ]
+  };
+
+  const productB = {
+    name: productB_Data.name,
+    price: productB_Data.price,
+    url: productB_Data.url,
+    isWinner: false,
+    features: productB_Data.features
+  };
+
   return (
-    <div className="relative isolate flex items-center justify-center min-h-[80vh] px-4 sm:px-6 lg:px-8 py-20 overflow-hidden">
-      
-      {/* 🌟 背景光暈特效 (深邃藍色調，象徵專業與隱私) */}
-      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#3b82f6] to-[#1e3a8a] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
-      </div>
-
-      <div className="max-w-3xl mx-auto text-center z-10">
-        <div className="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-semibold text-blue-700 bg-blue-50 mb-6 border border-blue-200 shadow-sm">
-          💌 Join 1,000+ Solopreneurs & Digital Nomads
+    <>
+      <SchemaInjector data={{}} />
+      <article className="min-h-screen bg-slate-50 pb-20">
+        <VideoHero 
+          title={`${productA.name} vs ${productB.name}: Which is better in 2026?`}
+          subtitle={productA_Notion.tagline || `We tested both platforms. Here is why ${productA.name} takes the lead.`}
+          winnerName={productA.name}
+          winnerUrl={productA.url}
+          videoUrl={productA_Notion.videoUrl || undefined} 
+        />
+        <ComparisonTable productA={productA} productB={productB} />
+        
+        {/* 🌟 讓 ReactMarkdown 自動幫你排版長篇文章 */}
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 mt-12">
+          {markdownContent ? (
+            <div className="prose prose-slate prose-blue lg:prose-xl text-slate-700 max-w-none">
+              <ReactMarkdown>{markdownContent}</ReactMarkdown>
+            </div>
+          ) : (
+            <div className="prose prose-slate lg:prose-xl text-slate-700">
+              <h2 className="text-3xl font-bold mb-6 text-slate-900">Why {productA.name} Wins</h2>
+              <p>Based on our analysis, {productA.name} provides the most robust solution for solopreneurs.</p>
+            </div>
+          )}
         </div>
-        
-        <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
-          Master Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Digital Sovereignty</span>
-        </h1>
-        
-        <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-          Get weekly insights on privacy tools, SaaS marketing automation, and strategies to scale your digital empire. Zero fluff. No spam.
-        </p>
-
-        {/* 🌟 Beehiiv 嵌入表單區塊 */}
-        <div className="bg-white p-2 rounded-2xl shadow-xl border border-slate-200 max-w-lg mx-auto transform hover:scale-[1.02] transition-transform duration-300">
-          {/* ✅ 已修正：只保留純網址，並將高度設為 300 以完整顯示表單內容 */}
-          <iframe 
-            src="https://subscribe-forms.beehiiv.com/066502fb-90a9-4c4b-bbfc-bc97cc4eed96" 
-            data-test-id="beehiiv-embed" 
-            height="300" 
-            frameBorder="0" 
-            scrolling="no" 
-            style={{ margin: 0, borderRadius: '0px', backgroundColor: 'transparent', width: '100%' }}
-          ></iframe>
-        </div>
-        
-        <p className="text-sm text-slate-500 mt-6 flex items-center justify-center gap-2">
-          <span>🔒</span> 100% Secure. Unsubscribe anytime.
-        </p>
-      </div>
-    </div>
+      </article>
+    </>
   );
 }
