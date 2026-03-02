@@ -1,3 +1,4 @@
+// app/scale/page.tsx
 import { getSaaSTools, SaaSTool } from '@/lib/notion';
 import Link from 'next/link';
 
@@ -46,6 +47,42 @@ export default async function ScalePage() {
               </div>
             </div>
           ))}
+        </div>
+
+        {/* 🚀 新增：深度對比文章區塊 (接在工具清單下方) */}
+        <div className="mt-24 pt-16 border-t border-slate-200">
+          <div className="flex items-center justify-between mb-8">
+            <div>
+              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 mb-2">🔥 Deep Dive Comparisons</h2>
+              <p className="text-slate-500">Not sure which tool to pick? Read our brutally honest head-to-head reviews.</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 relative z-10">
+            {/* 第一張對比卡片 */}
+            <Link href="/comparisons/semrush-vs-se-ranking" className="group block bg-white/80 backdrop-blur-sm border border-slate-200 rounded-3xl p-6 sm:p-8 hover:shadow-xl hover:border-orange-200 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-blue-50 text-blue-700 mb-4">SEO Tools</span>
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-orange-600 transition-colors mb-2">Semrush vs SE Ranking</h3>
+                  <p className="text-slate-500 text-sm sm:text-base leading-relaxed">The brutally honest 2026 review. Which SEO tool is actually worth your money as a solopreneur?</p>
+                </div>
+                <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-slate-50 group-hover:bg-orange-50 group-hover:text-orange-600 transition-colors text-slate-400">↗</div>
+              </div>
+            </Link>
+
+            {/* 第二張對比卡片 */}
+            <Link href="/comparisons/snov-io-vs-lemlist-2026-review" className="group block bg-white/80 backdrop-blur-sm border border-slate-200 rounded-3xl p-6 sm:p-8 hover:shadow-xl hover:border-rose-200 transition-all duration-300 transform hover:-translate-y-1">
+              <div className="flex justify-between items-start">
+                <div>
+                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-purple-50 text-purple-700 mb-4">Cold Email</span>
+                  <h3 className="text-xl sm:text-2xl font-bold text-slate-900 group-hover:text-rose-600 transition-colors mb-2">Snov.io vs Lemlist</h3>
+                  <p className="text-slate-500 text-sm sm:text-base leading-relaxed">An all-in-one cold email showdown. Automate your sales outreach without burning your domain.</p>
+                </div>
+                <div className="hidden sm:flex items-center justify-center w-10 h-10 rounded-full bg-slate-50 group-hover:bg-rose-50 group-hover:text-rose-600 transition-colors text-slate-400">↗</div>
+              </div>
+            </Link>
+          </div>
         </div>
       </div>
     </div>

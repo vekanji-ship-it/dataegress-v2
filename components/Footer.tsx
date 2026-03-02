@@ -28,13 +28,13 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 法律與聯絡資訊 */}
+          {/* 法律與聯絡資訊 (已修復：不再是 #，而是連回首頁) */}
           <div>
             <h3 className="text-white font-semibold mb-4">Legal</h3>
             <ul className="space-y-3 text-sm">
-              <li><Link href="#" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="#" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link href="#" className="hover:text-white transition-colors">Contact Us</Link></li>
+              <li><Link href="/" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              <li><Link href="/" className="hover:text-white transition-colors">Contact Us</Link></li>
             </ul>
           </div>
         </div>
@@ -45,12 +45,22 @@ export default function Footer() {
           DataEgress is reader-supported. When you buy through links on our site, we may earn an affiliate commission at no extra cost to you. Our reviews are based on independent research and our own 30-day rigorous testing methodology.
         </div>
 
-        {/* 底部版權宣告 */}
+       {/* 底部版權宣告與社群連結 (已修復 Twitter 和 Instagram) */}
         <div className="flex flex-col md:flex-row justify-between items-center text-xs border-t border-slate-800 pt-8">
           <p>© {new Date().getFullYear()} DataEgress. All rights reserved.</p>
-          <div className="mt-4 md:mt-0 space-x-4">
-            <span className="hover:text-white cursor-pointer transition-colors">Twitter (X)</span>
-            <span className="hover:text-white cursor-pointer transition-colors">YouTube</span>
+          <div className="mt-4 md:mt-0 flex space-x-6">
+            {/* 改為使用 Link 連回首頁 */}
+            <Link href="/" className="hover:text-white transition-colors">
+              Twitter (X)
+            </Link>
+            <a 
+              href="https://www.instagram.com/moji_ailife" 
+              target="_blank" 
+              rel="noopener noreferrer" 
+              className="hover:text-white transition-colors"
+            >
+              Instagram
+            </a>
           </div>
         </div>
       </div>

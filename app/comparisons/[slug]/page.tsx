@@ -3,7 +3,8 @@ import { getSaaSTools, getNotionPageContent } from '@/lib/notion';
 import SchemaInjector from '@/components/SchemaInjector';
 import VideoHero from '@/components/VideoHero';
 import ComparisonTable from '@/components/ComparisonTable';
-import ReactMarkdown from 'react-markdown'; // 🌟 引入 Markdown 渲染器
+import ReactMarkdown from 'react-markdown'; 
+import Link from 'next/link'; // 🌟 新增 Link 引入
 
 const competitorData: Record<string, any> = {
   "snov-io-vs-lemlist-2026-review": {
@@ -49,7 +50,6 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     );
   }
 
-  // 🌟 關鍵：去 Notion 把長篇文章抓下來
   const markdownContent = await getNotionPageContent(productA_Notion.id);
 
   const productB_Data = competitorData[currentSlug] || {
@@ -87,6 +87,14 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     <>
       <SchemaInjector data={{}} />
       <article className="min-h-screen bg-slate-50 pb-20">
+        
+        {/* 🚀 這裡就是新增的返回按鈕 */}
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+          <Link href="/scale" className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-orange-600 transition-colors">
+            <span className="mr-2">←</span> Back to Marketing & SEO
+          </Link>
+        </div>
+
         <VideoHero 
           title={`${productA.name} vs ${productB.name}: Which is better in 2026?`}
           subtitle={productA_Notion.tagline || `We tested both platforms. Here is why ${productA.name} takes the lead.`}
@@ -96,7 +104,6 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
         />
         <ComparisonTable productA={productA} productB={productB} />
         
-        {/* 🌟 讓 ReactMarkdown 自動幫你排版長篇文章 */}
         <div className="max-w-3xl mx-auto px-4 sm:px-6 mt-12">
           {markdownContent ? (
             <div className="prose prose-slate prose-blue lg:prose-xl text-slate-700 max-w-none">
