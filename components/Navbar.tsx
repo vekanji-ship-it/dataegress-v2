@@ -8,6 +8,7 @@ export default function Navbar() {
 
   // 定義導覽列的選項，方便管理
   const navLinks = [
+    { name: 'Checkup', href: '/checkup' }, // 🌟 新增的檢測工具按鈕
     { name: 'Protect', href: '/protect' },
     { name: 'Build', href: '/build' },
     { name: 'Scale', href: '/scale' },
