@@ -4,9 +4,11 @@ import SchemaInjector from '@/components/SchemaInjector';
 import VideoHero from '@/components/VideoHero';
 import ComparisonTable from '@/components/ComparisonTable';
 import ReactMarkdown from 'react-markdown'; 
-import Link from 'next/link'; // 🌟 新增 Link 引入
+import Link from 'next/link';
 
+// 🌟 1. 擴充對手字典 (新增 Protect 相關工具)
 const competitorData: Record<string, any> = {
+  // Scale 分類
   "snov-io-vs-lemlist-2026-review": {
     name: "Lemlist",
     price: "From $59/mo",
@@ -25,6 +27,27 @@ const competitorData: Record<string, any> = {
       { name: "Keyword Tracking", included: true },
       { name: "Competitor Analysis", included: true },
       { name: "Site Audit", included: true },
+    ]
+  },
+  // Protect 分類
+  "nordvpn-vs-surfshark": {
+    name: "Surfshark",
+    price: "From $2.49/mo",
+    url: "#", 
+    features: [
+      { name: "Unlimited Devices", included: true },
+      { name: "Dedicated IP Address", included: false },
+      { name: "Ad Blocker (CleanWeb)", included: true },
+    ]
+  },
+  "1password-vs-bitwarden": {
+    name: "Bitwarden",
+    price: "Free / $10/yr",
+    url: "#",
+    features: [
+      { name: "Open Source", included: true },
+      { name: "Travel Mode", included: false },
+      { name: "Unlimited Passwords", included: true },
     ]
   }
 };
@@ -83,15 +106,26 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     features: productB_Data.features
   };
 
+  // 🌟 2. 智慧判斷返回連結與分類名稱
+  let backLink = "/scale";
+  let backCategoryName = "Marketing & SEO";
+  let backColor = "hover:text-orange-600";
+
+  if (productA_Notion.category.includes('Security') || productA_Notion.category.includes('VPN')) {
+    backLink = "/protect";
+    backCategoryName = "Security & Privacy";
+    backColor = "hover:text-emerald-600"; // 配合 Protect 的綠色
+  }
+
   return (
     <>
       <SchemaInjector data={{}} />
       <article className="min-h-screen bg-slate-50 pb-20">
         
-        {/* 🚀 這裡就是新增的返回按鈕 */}
+        {/* 🚀 智慧返回按鈕 */}
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          <Link href="/scale" className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-orange-600 transition-colors">
-            <span className="mr-2">←</span> Back to Marketing & SEO
+          <Link href={backLink} className={`inline-flex items-center text-sm font-medium text-slate-500 transition-colors ${backColor}`}>
+            <span className="mr-2">←</span> Back to {backCategoryName}
           </Link>
         </div>
 
