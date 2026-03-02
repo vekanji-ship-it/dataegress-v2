@@ -28,13 +28,13 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* 法律與聯絡資訊 (已修復：不再是 #，而是連回首頁) */}
+          {/* 法律與聯絡資訊 (替換這個區塊) */}
           <div>
             <h3 className="text-white font-semibold mb-4">Legal</h3>
             <ul className="space-y-3 text-sm">
-              <li><Link href="/" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link href="/" className="hover:text-white transition-colors">Contact Us</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
+              <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
             </ul>
           </div>
         </div>
