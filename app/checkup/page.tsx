@@ -1,13 +1,20 @@
 "use client";
-
 import { useState } from 'react';
 
 // ==========================================
-// 🛡️ 工具 1：Privacy Quiz (隱私測驗)
+// 🛡️ 工具 1：Privacy Quiz 
 // ==========================================
 function PrivacyQuiz() {
   const [step, setStep] = useState(1);
   const [isFinished, setIsFinished] = useState(false);
+
+  const questions = [
+    "Do you use the same password across multiple accounts?",
+    "Have you ever searched your own name on Google?",
+    "Do you use a VPN on public Wi-Fi?",
+    "Have you ever clicked 'Accept All Cookies' without reading?",
+    "Is your phone number linked to your social media profiles?"
+  ];
 
   const handleAnswer = () => {
     if (step < 5) {
@@ -26,28 +33,29 @@ function PrivacyQuiz() {
             <span className="text-slate-400 text-sm font-medium">Step {step} / 5</span>
           </div>
           <h3 className="text-3xl font-bold text-slate-900 mb-10 leading-tight">
-            {step === 1 && "Do you use the same password across multiple accounts?"}
-            {step === 2 && "Have you ever searched your own name on Google?"}
-            {step === 3 && "Do you use a VPN on public Wi-Fi?"}
-            {step === 4 && "Have you ever clicked 'Accept All Cookies' without reading?"}
-            {step === 5 && "Is your phone number linked to your social media profiles?"}
+            {/* 🌟 防崩潰裝甲：用 span 包覆變動文字 */}
+            <span>{questions[step - 1]}</span>
           </h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <button onClick={handleAnswer} className="py-4 rounded-xl border-2 border-slate-200 text-slate-700 font-bold text-lg hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50 transition-all">
-              Yes
+              <span>Yes</span>
             </button>
             <button onClick={handleAnswer} className="py-4 rounded-xl border-2 border-slate-200 text-slate-700 font-bold text-lg hover:border-blue-600 hover:text-blue-600 hover:bg-blue-50 transition-all">
-              No
+              <span>No</span>
             </button>
           </div>
         </>
       ) : (
         <div className="text-center py-8 animate-fade-in-up">
           <div className="text-5xl mb-4">🚨</div>
-          <h3 className="text-2xl font-bold text-slate-900 mb-4">High Risk Detected</h3>
-          <p className="text-slate-600 mb-8">Your digital footprint is highly exposed. We strongly recommend using a password manager and a VPN immediately.</p>
+          <h3 className="text-2xl font-bold text-slate-900 mb-4">
+            <span>High Risk Detected</span>
+          </h3>
+          <p className="text-slate-600 mb-8">
+            <span>Your digital footprint is highly exposed. We strongly recommend using a password manager and a VPN immediately.</span>
+          </p>
           <button onClick={() => { setStep(1); setIsFinished(false); }} className="px-6 py-3 bg-blue-600 text-white font-bold rounded-xl hover:bg-blue-700 transition-colors">
-            Retake Quiz
+            <span>Retake Quiz</span>
           </button>
         </div>
       )}
@@ -56,7 +64,7 @@ function PrivacyQuiz() {
 }
 
 // ==========================================
-// 🚨 工具 2：Breach Checker (外洩掃描器 - 已連線後端 API)
+// 🚨 工具 2：Breach Checker 
 // ==========================================
 function BreachChecker() {
   const [email, setEmail] = useState('');
@@ -68,21 +76,15 @@ function BreachChecker() {
       alert('Please enter a valid email address.');
       return;
     }
-    
     setStatus('scanning');
-
     try {
-      // 呼叫我們剛剛建立的後端 API，這會同時檢查並存入 Notion
       const res = await fetch('/api/check-breach', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ email })
       });
-
       if (!res.ok) throw new Error('Failed to fetch');
-
       const data = await res.json();
-
       if (data.breached) {
         setBreachData({ count: data.count, sources: data.sources });
         setStatus('breached');
@@ -101,9 +103,9 @@ function BreachChecker() {
         <span className="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 text-blue-400 px-3 py-1 rounded-full text-xs font-mono mb-6 uppercase tracking-widest">
           🔒 Breach_Database_v2.0
         </span>
-        <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight">Has your email been leaked on the Dark Web?</h2>
+        <h2 className="text-4xl md:text-5xl font-bold mb-6 tracking-tight"><span>Has your email been leaked on the Dark Web?</span></h2>
         <p className="text-slate-400 text-lg mb-8 leading-relaxed">
-          Enter your primary email address, and we will scan the world's largest data breach databases to check if your credentials have been compromised.
+          <span>Enter your primary email address, and we will scan the world's largest data breach databases to check if your credentials have been compromised.</span>
         </p>
         
         <div className="flex flex-col sm:flex-row gap-4 mb-6">
@@ -113,7 +115,7 @@ function BreachChecker() {
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
-              if (status !== 'idle') setStatus('idle'); // 重新輸入時清除結果
+              if (status !== 'idle') setStatus('idle'); 
             }}
             className="flex-1 bg-slate-800/50 border border-slate-700 rounded-xl px-4 py-4 text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all"
           />
@@ -122,42 +124,32 @@ function BreachChecker() {
             disabled={status === 'scanning'}
             className="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-4 rounded-xl transition-colors disabled:opacity-50 min-w-[140px]"
           >
-            {status === 'scanning' ? 'Scanning...' : 'Check Now'}
+            <span>{status === 'scanning' ? 'Scanning...' : 'Check Now'}</span>
           </button>
         </div>
         
-        {/* 動態顯示檢測結果 */}
         {status === 'breached' && (
           <div className="bg-red-500/10 border border-red-500/20 text-red-400 p-5 rounded-xl animate-fade-in-up">
-            ⚠️ <strong>Alert:</strong> We found your email in <strong>{breachData.count}</strong> data breaches (e.g., {breachData.sources.join(', ')}). Change your passwords immediately and consider using a premium VPN.
+            ⚠️ <strong>Alert:</strong> <span>We found your email in <strong>{breachData.count}</strong> data breaches (e.g., {breachData.sources.join(', ')}). Change your passwords immediately.</span>
           </div>
         )}
         
         {status === 'clean' && (
           <div className="bg-emerald-500/10 border border-emerald-500/20 text-emerald-400 p-5 rounded-xl animate-fade-in-up">
-            ✅ <strong>Good News:</strong> We couldn't find this email in any known data breaches. Keep it safe by using a password manager!
+            ✅ <strong>Good News:</strong> <span>We couldn't find this email in any known data breaches. Keep it safe by using a password manager!</span>
           </div>
         )}
 
         {status === 'error' && (
-          <div className="text-amber-400 text-sm mt-4">Connection error. Please try again later.</div>
+          <div className="text-amber-400 text-sm mt-4"><span>Connection error. Please try again later.</span></div>
         )}
-
-        <p className="text-slate-500 text-xs mt-4">* By scanning, you agree to our privacy policy. We securely hash data queries.</p>
-      </div>
-      
-      {/* 右側背景大盾牌裝飾 (使用純 CSS 繪製) */}
-      <div className="absolute right-[-10%] top-1/2 transform -translate-y-1/2 opacity-[0.03] pointer-events-none hidden md:block">
-        <svg width="400" height="400" viewBox="0 0 24 24" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-        </svg>
       </div>
     </div>
   );
 }
 
 // ==========================================
-// ⚖️ 工具 3：Legal Generator (律師信生成器)
+// ⚖️ 工具 3：Legal Generator
 // ==========================================
 function LegalGenerator() {
   const [name, setName] = useState('');
@@ -191,11 +183,10 @@ Date: ${date}`;
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 max-w-6xl mx-auto">
-      {/* 左側：表單 */}
       <div className="bg-white rounded-3xl p-8 shadow-sm border border-slate-100">
         <h3 className="text-xl font-bold text-slate-900 mb-6 flex items-center gap-3">
           <span className="bg-blue-100 text-blue-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">1</span>
-          Fill in Your Details
+          <span>Fill in Your Details</span>
         </h3>
         <div className="space-y-5">
           <div>
@@ -211,18 +202,16 @@ Date: ${date}`;
             <input type="date" value={date} onChange={(e) => setDate(e.target.value)} className="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 focus:outline-none focus:border-blue-500 focus:bg-white transition-colors text-slate-600" />
           </div>
         </div>
-        <p className="text-xs text-slate-400 mt-6">* Your data is used only for real-time generation in your browser. We do not store any personal information.</p>
       </div>
 
-      {/* 右側：預覽與複製 */}
       <div className="bg-white rounded-3xl p-8 shadow-xl border border-blue-100 relative shadow-blue-900/5">
         <div className="flex justify-between items-center mb-6">
           <h3 className="text-xl font-bold text-slate-900 flex items-center gap-3">
             <span className="bg-slate-100 text-slate-600 w-8 h-8 rounded-full flex items-center justify-center text-sm">2</span>
-            Preview & Copy
+            <span>Preview & Copy</span>
           </h3>
           <button onClick={handleCopy} className="bg-slate-900 hover:bg-slate-800 text-white text-sm font-bold px-4 py-2 rounded-lg transition-colors flex items-center gap-2">
-            Copy Letter
+            <span>Copy Letter</span>
           </button>
         </div>
         <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 font-mono text-sm text-slate-600 whitespace-pre-wrap h-[400px] overflow-y-auto custom-scrollbar">
@@ -234,48 +223,34 @@ Date: ${date}`;
 }
 
 // ==========================================
-// 🚀 主頁面：整合以上三個工具
+// 🚀 主頁面
 // ==========================================
 export default function CheckupPage() {
   return (
     <main className="min-h-screen bg-[#fbfbfd] py-12 md:py-20">
-      
-      {/* 頂部標題介紹 */}
       <div className="text-center max-w-3xl mx-auto px-6 mb-12 pt-8">
         <h1 className="text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 mb-6">
           Security <span className="text-blue-600">Checkup</span>
         </h1>
-        <p className="text-xl text-slate-500">
-          Evaluate your digital footprint, scan for dark web breaches, and generate legal removal requests in minutes.
-        </p>
       </div>
 
-      {/* 🛡️ 第一關：Privacy Quiz */}
       <section className="container mx-auto px-6 mb-24">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Is your data safe?</h2>
-          <p className="text-slate-500 text-lg">Most personal data is traded openly on the black market. Complete a 60-second check to get your personalized privacy protection advice.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4"><span>Is your data safe?</span></h2>
         </div>
         <PrivacyQuiz />
       </section>
 
-      {/* 🚨 第二關：Breach Checker */}
       <section className="container mx-auto px-6 max-w-6xl mb-24">
          <BreachChecker />
       </section>
 
-      {/* ⚖️ 第三關：Legal Generator */}
       <section className="container mx-auto px-6">
         <div className="text-center max-w-2xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-3 py-1 rounded-full text-xs font-bold mb-4 uppercase tracking-wider">
-            Free Tool
-          </div>
-          <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4">Free Legal Letter Generator</h2>
-          <p className="text-slate-500 text-lg">Encountering a site with no "Opt-out" button? Use this tool to generate a GDPR/CCPA compliant request instantly.</p>
+          <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-4"><span>Free Legal Letter Generator</span></h2>
         </div>
         <LegalGenerator />
       </section>
-
     </main>
   );
 }
