@@ -1,4 +1,3 @@
-// app/comparisons/[slug]/page.tsx
 import { getSaaSTools, getNotionPageContent } from '@/lib/notion';
 import SchemaInjector from '@/components/SchemaInjector';
 import VideoHero from '@/components/VideoHero';
@@ -6,13 +5,11 @@ import ComparisonTable from '@/components/ComparisonTable';
 import ReactMarkdown from 'react-markdown'; 
 import Link from 'next/link';
 
-// 🌟 1. 擴充對手字典 (新增 Notion vs ClickUp)
 const competitorData: Record<string, any> = {
-  // Scale 分類
   "snov-io-vs-lemlist-2026-review": {
     name: "Lemlist",
     price: "From $59/mo",
-    url: "#",
+    url: "https://lemlist.com", 
     features: [
       { name: "Cold Email Drip Campaigns", included: true },
       { name: "Email Finder Extension", included: false },
@@ -22,18 +19,17 @@ const competitorData: Record<string, any> = {
   "semrush-vs-se-ranking": {
     name: "SE Ranking",
     price: "From $55/mo",
-    url: "#",
+    url: "https://seranking.com",
     features: [
       { name: "Keyword Tracking", included: true },
       { name: "Competitor Analysis", included: true },
       { name: "Site Audit", included: true },
     ]
   },
-  // Protect 分類
   "nordvpn-vs-surfshark": {
     name: "Surfshark",
     price: "From $2.49/mo",
-    url: "#", 
+    url: "https://surfshark.com", 
     features: [
       { name: "Unlimited Devices", included: true },
       { name: "Dedicated IP Address", included: false },
@@ -43,18 +39,17 @@ const competitorData: Record<string, any> = {
   "1password-vs-bitwarden": {
     name: "Bitwarden",
     price: "Free / $10/yr",
-    url: "#",
+    url: "https://bitwarden.com",
     features: [
       { name: "Open Source", included: true },
       { name: "Travel Mode", included: false },
       { name: "Unlimited Passwords", included: true },
     ]
   },
-  // 🚀 Stack 分類 (新增 ClickUp 對手數據)
   "notion-vs-clickup": {
     name: "ClickUp",
     price: "From $7/mo (+ Hidden Fees)",
-    url: "#",
+    url: "https://clickup.com",
     features: [
       { name: "Pre-built Dashboards", included: true },
       { name: "Native Time Tracking", included: true },
@@ -66,47 +61,26 @@ const competitorData: Record<string, any> = {
 export default async function ComparisonArticle({ params }: { params: Promise<{ slug: string }> }) {
   const resolvedParams = await params;
   const currentSlug = resolvedParams.slug;
-
   const allTools = await getSaaSTools();
   const productA_Notion = allTools.find(tool => tool.slug === currentSlug);
 
   if (!productA_Notion) {
     return (
-      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-8">
-        <div className="bg-white p-10 rounded-2xl shadow-xl max-w-2xl w-full text-center">
-          <span className="text-4xl mb-4 block">🕵️‍♂️</span>
-          <h1 className="text-2xl font-bold text-red-600 mb-4">找不到對應的 Slug</h1>
-          <p className="text-lg text-slate-700 mb-2">
-            網址輸入的 Slug 是：<code className="bg-red-100 text-red-800 px-2 py-1 rounded">{currentSlug}</code>
-          </p>
-        </div>
+      <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-8 text-center">
+        <h1 className="text-2xl font-bold text-red-600 mb-4">找不到對應的 Slug: {currentSlug}</h1>
       </div>
     );
   }
 
   const markdownContent = await getNotionPageContent(productA_Notion.id);
-
-  const productB_Data = competitorData[currentSlug] || {
-    name: "Competitor",
-    price: "Varies",
-    url: "#",
-    features: [
-      { name: "Feature 1", included: true },
-      { name: "Feature 2", included: false },
-    ]
-  };
+  const productB_Data = competitorData[currentSlug] || { name: "Competitor", price: "Varies", url: "#", features: [] };
 
   const productA = {
     name: productA_Notion.name,
     price: productA_Notion.pricing,
-    url: productA_Notion.affiliateUrl,
+    url: productA_Notion.affiliateUrl, // 🌟 正確帶入賺錢網址
     isWinner: true,
-    features: productA_Notion.pros.length > 0 
-      ? productA_Notion.pros.map(pro => ({ name: pro, included: true }))
-      : [
-          { name: "Core Feature 1", included: true },
-          { name: "Core Feature 2", included: true },
-        ]
+    features: productA_Notion.pros.map(pro => ({ name: pro, included: true }))
   };
 
   const productB = {
@@ -117,19 +91,15 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     features: productB_Data.features
   };
 
-  // 🌟 2. 智慧判斷返回連結與分類名稱 (新增 Stack 判斷)
   let backLink = "/scale";
   let backCategoryName = "Marketing & SEO";
   let backColor = "hover:text-orange-600";
 
-  // 判斷是否為 Protect (安全/VPN)
   if (productA_Notion.category.includes('Security') || productA_Notion.category.includes('VPN')) {
     backLink = "/protect";
     backCategoryName = "Security & Privacy";
     backColor = "hover:text-emerald-600"; 
-  } 
-  // 判斷是否為 Stack (生產力/Notion)
-  else if (productA_Notion.category.includes('Stack') || productA_Notion.category.includes('Productivity') || productA_Notion.name === 'Notion') {
+  } else if (productA_Notion.category.includes('Stack') || productA_Notion.category.includes('Productivity')) {
     backLink = "/stack";
     backCategoryName = "Productivity Stack";
     backColor = "hover:text-blue-600";
@@ -139,32 +109,30 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     <>
       <SchemaInjector data={{}} />
       <article className="min-h-screen bg-slate-50 pb-20">
-        
-        {/* 🚀 智慧返回按鈕 */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
+        <div className="max-w-7xl mx-auto px-4 pt-8">
           <Link href={backLink} className={`inline-flex items-center text-sm font-medium text-slate-500 transition-colors ${backColor}`}>
-            <span className="mr-2">←</span> Back to {backCategoryName}
+            ← Back to {backCategoryName}
           </Link>
         </div>
 
         <VideoHero 
           title={`${productA.name} vs ${productB.name}: Which is better in 2026?`}
-          subtitle={productA_Notion.tagline || `We tested both platforms. Here is why ${productA.name} takes the lead.`}
+          subtitle={productA_Notion.tagline || `We tested both platforms.`}
           winnerName={productA.name}
-          winnerUrl={productA.url}
+          winnerUrl={productA.url} // 🚀 傳入賺錢連結給 Hero 按鈕
           videoUrl={productA_Notion.videoUrl || undefined} 
         />
         <ComparisonTable productA={productA} productB={productB} />
         
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 mt-12">
+        <div className="max-w-3xl mx-auto px-4 mt-12">
           {markdownContent ? (
             <div className="prose prose-slate prose-blue lg:prose-xl text-slate-700 max-w-none">
               <ReactMarkdown>{markdownContent}</ReactMarkdown>
             </div>
           ) : (
-            <div className="prose prose-slate lg:prose-xl text-slate-700">
+            <div className="prose prose-slate lg:prose-xl text-slate-700 text-center">
               <h2 className="text-3xl font-bold mb-6 text-slate-900">Why {productA.name} Wins</h2>
-              <p>Based on our analysis, {productA.name} provides the most robust solution for solopreneurs.</p>
+              <p>Based on our analysis, {productA.name} is the superior choice for solo users.</p>
             </div>
           )}
         </div>
