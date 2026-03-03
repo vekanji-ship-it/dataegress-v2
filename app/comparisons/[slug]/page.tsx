@@ -1,3 +1,4 @@
+// app/comparisons/[slug]/page.tsx
 import { getSaaSTools, getNotionPageContent } from '@/lib/notion';
 import SchemaInjector from '@/components/SchemaInjector';
 import VideoHero from '@/components/VideoHero';
@@ -56,6 +57,17 @@ const competitorData: Record<string, any> = {
       { name: "Fast & Lightweight", included: false },
     ]
   },
+  // 🌟 新增 Framer 對手資料，讓畫面更豐富
+  "framer-review": {
+    name: "Webflow",
+    price: "From $14/mo",
+    url: "https://webflow.com",
+    features: [
+      { name: "Visual Canvas", included: true },
+      { name: "Complex CMS", included: true },
+      { name: "Steep Learning Curve", included: true },
+    ]
+  }
 };
 
 export default async function ComparisonArticle({ params }: { params: Promise<{ slug: string }> }) {
@@ -75,34 +87,55 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
   const markdownContent = await getNotionPageContent(productA_Notion.id);
   const productB_Data = competitorData[currentSlug] || { name: "Competitor", price: "Varies", url: "#", features: [] };
 
+  // 🛡️ 防崩潰安全機制：確保 pros 存在且是陣列，否則給空陣列
+  const safePros = Array.isArray(productA_Notion.pros) ? productA_Notion.pros : [];
+
   const productA = {
-    name: productA_Notion.name,
-    price: productA_Notion.pricing,
-    url: productA_Notion.affiliateUrl, // 🌟 正確帶入賺錢網址
+    name: productA_Notion.name || "Product",
+    price: productA_Notion.pricing || "Varies",
+    url: productA_Notion.affiliateUrl || "#", // 🛡️ 確保有網址，按鈕才不會消失
     isWinner: true,
-    features: productA_Notion.pros.map(pro => ({ name: pro, included: true }))
+    features: safePros.length > 0 
+      ? safePros.map(pro => ({ name: pro, included: true }))
+      : [
+          { name: "Core Feature 1", included: true },
+          { name: "Core Feature 2", included: true }
+        ]
   };
 
   const productB = {
     name: productB_Data.name,
     price: productB_Data.price,
-    url: productB_Data.url,
+    url: productB_Data.url || "#",
     isWinner: false,
-    features: productB_Data.features
+    features: Array.isArray(productB_Data.features) && productB_Data.features.length > 0
+      ? productB_Data.features
+      : [
+          { name: "Feature 1", included: false },
+          { name: "Feature 2", included: false }
+        ]
   };
 
+  // 🌟 智慧判斷返回連結與分類名稱
   let backLink = "/scale";
   let backCategoryName = "Marketing & SEO";
   let backColor = "hover:text-orange-600";
 
-  if (productA_Notion.category.includes('Security') || productA_Notion.category.includes('VPN')) {
+  // 確保 category 處理不會出錯
+  const categories = Array.isArray(productA_Notion.category) ? productA_Notion.category.join(' ') : (productA_Notion.category || '');
+
+  if (categories.includes('Security') || categories.includes('VPN')) {
     backLink = "/protect";
     backCategoryName = "Security & Privacy";
     backColor = "hover:text-emerald-600"; 
-  } else if (productA_Notion.category.includes('Stack') || productA_Notion.category.includes('Productivity')) {
+  } else if (categories.includes('Stack') || categories.includes('Productivity') || productA_Notion.name === 'Notion') {
     backLink = "/stack";
     backCategoryName = "Productivity Stack";
     backColor = "hover:text-blue-600";
+  } else if (categories.includes('Web Design') || categories.includes('Hosting') || categories.includes('Community')) {
+    backLink = "/build";
+    backCategoryName = "Build Your Empire";
+    backColor = "hover:text-fuchsia-600";
   }
 
   return (
@@ -117,7 +150,7 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
 
         <VideoHero 
           title={`${productA.name} vs ${productB.name}: Which is better in 2026?`}
-          subtitle={productA_Notion.tagline || `We tested both platforms.`}
+          subtitle={productA_Notion.tagline || `We tested both platforms. Here is why ${productA.name} wins.`}
           winnerName={productA.name}
           winnerUrl={productA.url} // 🚀 傳入賺錢連結給 Hero 按鈕
           videoUrl={productA_Notion.videoUrl || undefined} 
