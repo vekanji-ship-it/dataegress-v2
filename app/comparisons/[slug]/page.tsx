@@ -6,7 +6,7 @@ import ComparisonTable from '@/components/ComparisonTable';
 import ReactMarkdown from 'react-markdown'; 
 import Link from 'next/link';
 
-// 🌟 1. 擴充對手字典 (新增 Protect 相關工具)
+// 🌟 1. 擴充對手字典 (新增 Notion vs ClickUp)
 const competitorData: Record<string, any> = {
   // Scale 分類
   "snov-io-vs-lemlist-2026-review": {
@@ -49,7 +49,18 @@ const competitorData: Record<string, any> = {
       { name: "Travel Mode", included: false },
       { name: "Unlimited Passwords", included: true },
     ]
-  }
+  },
+  // 🚀 Stack 分類 (新增 ClickUp 對手數據)
+  "notion-vs-clickup": {
+    name: "ClickUp",
+    price: "From $7/mo (+ Hidden Fees)",
+    url: "#",
+    features: [
+      { name: "Pre-built Dashboards", included: true },
+      { name: "Native Time Tracking", included: true },
+      { name: "Fast & Lightweight", included: false },
+    ]
+  },
 };
 
 export default async function ComparisonArticle({ params }: { params: Promise<{ slug: string }> }) {
@@ -106,15 +117,22 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     features: productB_Data.features
   };
 
-  // 🌟 2. 智慧判斷返回連結與分類名稱
+  // 🌟 2. 智慧判斷返回連結與分類名稱 (新增 Stack 判斷)
   let backLink = "/scale";
   let backCategoryName = "Marketing & SEO";
   let backColor = "hover:text-orange-600";
 
+  // 判斷是否為 Protect (安全/VPN)
   if (productA_Notion.category.includes('Security') || productA_Notion.category.includes('VPN')) {
     backLink = "/protect";
     backCategoryName = "Security & Privacy";
-    backColor = "hover:text-emerald-600"; // 配合 Protect 的綠色
+    backColor = "hover:text-emerald-600"; 
+  } 
+  // 判斷是否為 Stack (生產力/Notion)
+  else if (productA_Notion.category.includes('Stack') || productA_Notion.category.includes('Productivity') || productA_Notion.name === 'Notion') {
+    backLink = "/stack";
+    backCategoryName = "Productivity Stack";
+    backColor = "hover:text-blue-600";
   }
 
   return (
