@@ -1,9 +1,6 @@
 import { Client } from '@notionhq/client';
 import { NotionToMarkdown } from 'notion-to-md';
 
-// ==========================================
-// 1. 介面定義 (Interfaces)
-// ==========================================
 export interface SaaSTool {
   id: string;
   name: string;
@@ -21,25 +18,21 @@ export interface SaaSTool {
 
 export interface Article {
   id: string;
-  slug: string; // 🌟 新增：漂亮網址標籤
+  slug: string; 
   title: string;
+  coverImage: string | null; // 🌟 新增：封面圖連結
   publishStatus: string;
   content: string;
   createdAt: string;
 }
 
-// ==========================================
-// 2. 初始化 Notion 客戶端
-// ==========================================
 const notionClient = new Client({
   auth: process.env.NOTION_API_KEY || "",
 });
 const n2m = new NotionToMarkdown({ notionClient: notionClient });
 
-// ==========================================
-// 3. 原本的 SaaS 工具抓取 (完全保留)
-// ==========================================
 export async function getSaaSTools(): Promise<SaaSTool[]> {
+// ... (保留你原本 getSaaSTools 的代碼不變)
   const rawDbId = process.env.NOTION_DATABASE_ID || "";
   const rawApiKey = process.env.NOTION_API_KEY || "";
   const databaseId = rawDbId.trim().split('?')[0]; 
@@ -100,9 +93,6 @@ export async function getSaaSTools(): Promise<SaaSTool[]> {
   }
 }
 
-// ==========================================
-// 4. 新增的魔法：抓取 Notion 頁面正文並轉成 Markdown
-// ==========================================
 export async function getNotionPageContent(pageId: string) {
   try {
     const mdblocks = await n2m.pageToMarkdown(pageId);
@@ -114,9 +104,7 @@ export async function getNotionPageContent(pageId: string) {
   }
 }
 
-// ==========================================
-// 5. 🌟 升級版函數：抓取包含 Slug 的部落格文章
-// ==========================================
+// 🌟 核心修改：抓取圖片
 export async function getPublishedArticles(): Promise<Article[]> {
   const databaseId = process.env.NOTION_CONTENT_DB_ID || "";
   const apiKey = process.env.NOTION_API_KEY || "";
@@ -154,11 +142,18 @@ export async function getPublishedArticles(): Promise<Article[]> {
       const props = page.properties;
       const contentMarkdown = await getNotionPageContent(page.id); 
 
+      // 🌟 取得圖片連結
+      let coverImageUrl = null;
+      const coverFile = props["封面圖"]?.files?.[0];
+      if (coverFile) {
+        coverImageUrl = coverFile.external?.url || coverFile.file?.url || null;
+      }
+
       return {
         id: page.id,
-        // 🌟 核心升級：抓取 Slug 欄位，如果沒填則用 ID 當後備
         slug: props["Slug"]?.rich_text?.[0]?.plain_text || page.id,
         title: props["文章標題"]?.title?.[0]?.plain_text || "無標題",
+        coverImage: coverImageUrl, // 🌟 寫入圖片
         publishStatus: props["發布狀態"]?.status?.name || "未知狀態",
         createdAt: page.created_time,
         content: contentMarkdown, 
