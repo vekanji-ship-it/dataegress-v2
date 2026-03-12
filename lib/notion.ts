@@ -21,6 +21,7 @@ export interface SaaSTool {
 
 export interface Article {
   id: string;
+  slug: string; // 🌟 新增：漂亮網址標籤
   title: string;
   publishStatus: string;
   content: string;
@@ -36,7 +37,7 @@ const notionClient = new Client({
 const n2m = new NotionToMarkdown({ notionClient: notionClient });
 
 // ==========================================
-// 3. 原本的 SaaS 工具抓取 (完全保留你寫的版本)
+// 3. 原本的 SaaS 工具抓取 (完全保留)
 // ==========================================
 export async function getSaaSTools(): Promise<SaaSTool[]> {
   const rawDbId = process.env.NOTION_DATABASE_ID || "";
@@ -114,7 +115,7 @@ export async function getNotionPageContent(pageId: string) {
 }
 
 // ==========================================
-// 5. 🌟 這次缺少的核心函數：抓取部落格文章
+// 5. 🌟 升級版函數：抓取包含 Slug 的部落格文章
 // ==========================================
 export async function getPublishedArticles(): Promise<Article[]> {
   const databaseId = process.env.NOTION_CONTENT_DB_ID || "";
@@ -155,6 +156,8 @@ export async function getPublishedArticles(): Promise<Article[]> {
 
       return {
         id: page.id,
+        // 🌟 核心升級：抓取 Slug 欄位，如果沒填則用 ID 當後備
+        slug: props["Slug"]?.rich_text?.[0]?.plain_text || page.id,
         title: props["文章標題"]?.title?.[0]?.plain_text || "無標題",
         publishStatus: props["發布狀態"]?.status?.name || "未知狀態",
         createdAt: page.created_time,
