@@ -22,7 +22,10 @@ const competitorData: Record<string, any> = {
   "hostinger-review": { name: "Bluehost", price: "From $2.95/mo", url: "https://www.bluehost.com", features: [{ name: "cPanel", included: true }, { name: "LiteSpeed Servers", included: false }, { name: "24/7 Support", included: true }] },
   "surfshark-review": { name: "ExpressVPN", price: "From $6.67/mo", url: "https://www.expressvpn.com", features: [{ name: "High Speed", included: true }, { name: "Unlimited Devices", included: false }, { name: "No-logs Policy", included: true }] },
   "clickup-review": { name: "Asana", price: "From $10.99/mo", url: "https://asana.com", features: [{ name: "Task Management", included: true }, { name: "Complex Dashboards", included: false }, { name: "Beginner Friendly", included: true }] },
-  "framer-review": { name: "Webflow", price: "From $14/mo", url: "https://webflow.com", features: [{ name: "Visual Canvas", included: true }, { name: "Complex CMS", included: true }, { name: "Steep Learning Curve", included: true }] }
+  "framer-review": { name: "Webflow", price: "From $14/mo", url: "https://webflow.com", features: [{ name: "Visual Canvas", included: true }, { name: "Complex CMS", included: true }, { name: "Steep Learning Curve", included: true }] },
+  
+  // ✅ 本次唯一新增：加入 LogMeOnce 的對手資料，防止抓不到資料而報錯
+  "logmeonce": { name: "1Password", price: "From $2.99/mo", url: "https://1password.com", features: [{ name: "Anti-Hacker Mugshot", included: false }, { name: "Watchtower Security", included: true }, { name: "Free Tier", included: false }] }
 };
 
 export default async function ComparisonArticle({ params }: { params: Promise<{ slug: string }> }) {
@@ -42,24 +45,26 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
   }
 
   const markdownContent = await getNotionPageContent(productA_Notion.id);
-  const productB_Data = competitorData[currentSlug] || { name: "Alternative Tool", price: "Varies", url: "#", features: [] };
+  // ✅ 確保備用資料的屬性完整，防止 undefined
+  const productB_Data = competitorData[currentSlug] || { name: "Alternative Tool", price: "Varies", url: "#", features: [{ name: "Feature 1", included: false }, { name: "Feature 2", included: false }] };
 
   const safePros = Array.isArray(productA_Notion.pros) ? productA_Notion.pros : [];
 
+  // ✅ 強化字串型別確保，避免元件收到空值當機
   const productA = {
-    name: productA_Notion.name || "Product",
-    price: productA_Notion.pricing || "Varies",
-    url: productA_Notion.affiliateUrl || "#",
+    name: String(productA_Notion.name || "Product A"),
+    price: String(productA_Notion.pricing || "Varies"),
+    url: String(productA_Notion.affiliateUrl || "#"),
     isWinner: true,
-    features: safePros.length > 0 ? safePros.map(pro => ({ name: pro, included: true })) : [{ name: "Core Feature 1", included: true }, { name: "Core Feature 2", included: true }]
+    features: safePros.length > 0 ? safePros.map(pro => ({ name: String(pro), included: true })) : [{ name: "Core Feature 1", included: true }, { name: "Core Feature 2", included: true }]
   };
 
   const productB = {
-    name: productB_Data.name,
-    price: productB_Data.price,
-    url: productB_Data.url || "#",
+    name: String(productB_Data.name),
+    price: String(productB_Data.price),
+    url: String(productB_Data.url || "#"),
     isWinner: false,
-    features: Array.isArray(productB_Data.features) && productB_Data.features.length > 0 ? productB_Data.features : [{ name: "Feature 1", included: false }, { name: "Feature 2", included: false }]
+    features: Array.isArray(productB_Data.features) ? productB_Data.features : [{ name: "Feature 1", included: false }, { name: "Feature 2", included: false }]
   };
 
   let backLink = "/scale";
@@ -67,7 +72,8 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
   let backColor = "hover:text-orange-600";
   const categories = Array.isArray(productA_Notion.category) ? productA_Notion.category.join(' ') : (productA_Notion.category || '');
 
-  if (categories.includes('Security') || categories.includes('VPN') || categories.includes('Privacy')) {
+  if (categories.includes('Security') || categories.includes('VPN') || categories.includes('Privacy') || categories.includes('Identity Protection')) {
+    // ✅ 補上 Identity Protection 的返回路徑判斷
     backLink = "/protect"; backCategoryName = "Security & Privacy"; backColor = "hover:text-emerald-600"; 
   } else if (categories.includes('Stack') || categories.includes('Productivity') || productA_Notion.name === 'Notion') {
     backLink = "/stack"; backCategoryName = "Productivity Stack"; backColor = "hover:text-blue-600";
