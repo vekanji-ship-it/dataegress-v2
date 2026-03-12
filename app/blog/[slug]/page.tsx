@@ -6,19 +6,22 @@ import Link from "next/link";
 
 export const revalidate = 60;
 
-// 🌟 核心修改：params 裡面的 key 必須與資料夾名稱 [Slug] 一致
 export default async function BlogPost({ params }: { params: Promise<{ Slug: string }> }) {
-  // 1. 等待網址參數解析
+  // 1. 拿到網址上的 Slug
   const resolvedParams = await params;
-  const currentSlug = resolvedParams.Slug; 
+  const urlSlug = resolvedParams.Slug.toLowerCase().trim();
 
   // 2. 抓取文章清單
   const articles = await getPublishedArticles();
   
-  // 3. 比對 Slug (如果 Notion 沒填 Slug，我們會自動 fallback 到 ID)
-  const article = articles.find((a) => a.slug === currentSlug || a.id === currentSlug);
+  // 3. 強化版比對邏輯：不分大小寫、去掉空格，同時比對 Slug 和 ID
+  const article = articles.find((a) => {
+    const notionSlug = (a.slug || "").toLowerCase().trim();
+    const notionId = (a.id || "").trim();
+    return notionSlug === urlSlug || notionId === urlSlug;
+  });
 
-  // 如果真的找不到，顯示 404
+  // 如果還是找不到，顯示 404
   if (!article) {
     notFound();
   }
@@ -39,7 +42,7 @@ export default async function BlogPost({ params }: { params: Promise<{ Slug: str
           </p>
         </header>
 
-        {/* 使用 Typography 排版魔法渲染內文 */}
+        {/* 渲染內文 */}
         <div className="prose prose-lg prose-blue max-w-none leading-relaxed">
           <ReactMarkdown>{article.content}</ReactMarkdown>
         </div>
