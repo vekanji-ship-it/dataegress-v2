@@ -60,7 +60,7 @@ export async function getSaaSTools(): Promise<SaaSTool[]> {
       body: JSON.stringify({
         filter: {
           property: 'Status',
-          status: { equals: 'Published' },
+          status: { equals: '完成' },
         },
         sorts: [
           { property: 'Rating', direction: 'descending' },
