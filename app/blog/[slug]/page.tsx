@@ -1,4 +1,4 @@
-// app/blog/[id]/page.tsx
+// app/blog/[Slug]/page.tsx
 import { getPublishedArticles } from "@/lib/notion";
 import ReactMarkdown from "react-markdown";
 import { notFound } from "next/navigation";
@@ -6,17 +6,19 @@ import Link from "next/link";
 
 export const revalidate = 60;
 
-// 🌟 升級點：兼容 Next.js 15 的非同步 Params
-export default async function BlogPost({ params }: { params: Promise<{ id: string }> | { id: string } }) {
-  // 1. 強制等待網址參數解析完成 (打開包裹)
-  const resolvedParams = await Promise.resolve(params);
-  const articleId = resolvedParams.id;
+// 🌟 核心修改：params 裡面的 key 必須與資料夾名稱 [Slug] 一致
+export default async function BlogPost({ params }: { params: Promise<{ Slug: string }> }) {
+  // 1. 等待網址參數解析
+  const resolvedParams = await params;
+  const currentSlug = resolvedParams.Slug; 
 
-  // 2. 抓取文章並比對 ID
+  // 2. 抓取文章清單
   const articles = await getPublishedArticles();
-  const article = articles.find((a) => a.id === articleId);
+  
+  // 3. 比對 Slug (如果 Notion 沒填 Slug，我們會自動 fallback 到 ID)
+  const article = articles.find((a) => a.slug === currentSlug || a.id === currentSlug);
 
-  // 如果真的找不到，才顯示 404
+  // 如果真的找不到，顯示 404
   if (!article) {
     notFound();
   }
@@ -37,7 +39,7 @@ export default async function BlogPost({ params }: { params: Promise<{ id: strin
           </p>
         </header>
 
-        {/* 渲染 AI 寫好的 Markdown SEO 長文 */}
+        {/* 使用 Typography 排版魔法渲染內文 */}
         <div className="prose prose-lg prose-blue max-w-none leading-relaxed">
           <ReactMarkdown>{article.content}</ReactMarkdown>
         </div>

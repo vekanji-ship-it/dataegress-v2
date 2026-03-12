@@ -1,12 +1,10 @@
 // app/blog/page.tsx
 import Link from "next/link";
-import { getPublishedArticles } from "@/lib/notion"; // 確保路徑與你的 notion.ts 一致
+import { getPublishedArticles } from "@/lib/notion"; 
 
-// 🌟 ISR 增量靜態生成：每 60 秒自動去 Notion 檢查有沒有新文章，不用重新部署網站！
 export const revalidate = 60; 
 
 export default async function BlogIndex() {
-  // 呼叫我們剛剛寫好的引擎，抓取已發布文章
   const articles = await getPublishedArticles();
 
   return (
@@ -24,7 +22,8 @@ export default async function BlogIndex() {
         <div className="grid gap-6">
           {articles.map((article) => (
             <Link 
-              href={`/blog/${article.id}`} 
+              // 🌟 核心修改：將連結改為 article.slug
+              href={`/blog/${article.slug}`} 
               key={article.id} 
               className="block p-6 border border-gray-200 rounded-xl hover:shadow-md hover:border-blue-500 transition-all bg-white"
             >
