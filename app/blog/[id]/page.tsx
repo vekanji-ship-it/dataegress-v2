@@ -6,12 +6,17 @@ import Link from "next/link";
 
 export const revalidate = 60;
 
-export default async function BlogPost({ params }: { params: { id: string } }) {
-  // 取得所有文章，並找出符合目前網址 ID 的那一篇
-  const articles = await getPublishedArticles();
-  const article = articles.find((a) => a.id === params.id);
+// 🌟 升級點：兼容 Next.js 15 的非同步 Params
+export default async function BlogPost({ params }: { params: Promise<{ id: string }> | { id: string } }) {
+  // 1. 強制等待網址參數解析完成 (打開包裹)
+  const resolvedParams = await Promise.resolve(params);
+  const articleId = resolvedParams.id;
 
-  // 如果找不到文章，顯示 404 頁面
+  // 2. 抓取文章並比對 ID
+  const articles = await getPublishedArticles();
+  const article = articles.find((a) => a.id === articleId);
+
+  // 如果真的找不到，才顯示 404
   if (!article) {
     notFound();
   }
@@ -32,8 +37,8 @@ export default async function BlogPost({ params }: { params: { id: string } }) {
           </p>
         </header>
 
-        {/* 使用 react-markdown 渲染 Notion 傳來的文字 */}
-        <div className="prose prose-lg prose-blue max-w-none">
+        {/* 渲染 AI 寫好的 Markdown SEO 長文 */}
+        <div className="prose prose-lg prose-blue max-w-none leading-relaxed">
           <ReactMarkdown>{article.content}</ReactMarkdown>
         </div>
       </article>
