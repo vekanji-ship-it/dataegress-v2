@@ -6,23 +6,33 @@ import Link from "next/link";
 
 export const revalidate = 60;
 
-export default async function BlogPost({ params }: { params: Promise<{ Slug: string }> }) {
-  // 1. 拿到網址上的 Slug
+export default async function BlogPost({ params }: { params: Promise<{ Slug?: string; slug?: string }> }) {
+  // 1. 拿到網址上的參數 (同時兼容 Slug 和 slug)
   const resolvedParams = await params;
-  const urlSlug = resolvedParams.Slug.toLowerCase().trim();
+  
+  // 🌟 防彈機制：不管系統給大寫還是小寫，都抓出來，並確保它不是 undefined
+  const rawSlug = resolvedParams.Slug || resolvedParams.slug;
+  
+  if (!rawSlug) {
+    console.error("❌ 找不到網址參數 params");
+    notFound();
+  }
+
+  const urlSlug = rawSlug.toLowerCase().trim();
 
   // 2. 抓取文章清單
   const articles = await getPublishedArticles();
   
-  // 3. 強化版比對邏輯：不分大小寫、去掉空格，同時比對 Slug 和 ID
+  // 3. 強化版比對邏輯
   const article = articles.find((a) => {
     const notionSlug = (a.slug || "").toLowerCase().trim();
     const notionId = (a.id || "").trim();
     return notionSlug === urlSlug || notionId === urlSlug;
   });
 
-  // 如果還是找不到，顯示 404
+  // 如果找不到文章，顯示 404
   if (!article) {
+    console.warn(`⚠️ 找不到對應的文章內容，Slug 為: ${urlSlug}`);
     notFound();
   }
 
@@ -37,8 +47,8 @@ export default async function BlogPost({ params }: { params: Promise<{ Slug: str
           <h1 className="text-4xl font-extrabold text-gray-900 mb-4 leading-tight">
             {article.title}
           </h1>
-          <p className="text-gray-500">
-            {new Date(article.createdAt).toLocaleDateString('zh-TW')}
+          <p className="text-gray-500 text-sm">
+            發布日期：{new Date(article.createdAt).toLocaleDateString('zh-TW')}
           </p>
         </header>
 
