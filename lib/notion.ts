@@ -103,7 +103,7 @@ export async function getNotionPageContent(pageId: string) {
   }
 }
 
-// 🌟 核心修改：抓取對應的英文欄位 (Status, Cover Image, Title)
+// 🌟 對接英文版 Content Pipeline
 export async function getPublishedArticles(): Promise<Article[]> {
   const databaseId = process.env.NOTION_CONTENT_DB_ID || "";
   const apiKey = process.env.NOTION_API_KEY || "";
@@ -123,7 +123,7 @@ export async function getPublishedArticles(): Promise<Article[]> {
       },
       body: JSON.stringify({
         filter: {
-          property: 'Status', // 🌟 對接 Notion 的 Status 欄位
+          property: 'Status', // 對接 Status 欄位
           status: { equals: 'Published' }, 
         },
         sorts: [
@@ -142,7 +142,7 @@ export async function getPublishedArticles(): Promise<Article[]> {
       const contentMarkdown = await getNotionPageContent(page.id); 
 
       let coverImageUrl = null;
-      // 🌟 對接 Notion 的 Cover Image 欄位
+      // 對接 Cover Image 欄位
       const coverFile = props["Cover Image"]?.files?.[0];
       if (coverFile) {
         coverImageUrl = coverFile.external?.url || coverFile.file?.url || null;
@@ -151,9 +151,9 @@ export async function getPublishedArticles(): Promise<Article[]> {
       return {
         id: page.id,
         slug: props["Slug"]?.rich_text?.[0]?.plain_text || page.id,
-        title: props["Title"]?.title?.[0]?.plain_text || "Untitled", // 🌟 對接 Title 欄位
+        title: props["Title"]?.title?.[0]?.plain_text || "Untitled", // 對接 Title 欄位
         coverImage: coverImageUrl, 
-        publishStatus: props["Status"]?.status?.name || "Draft", // 🌟 對接 Status 欄位
+        publishStatus: props["Status"]?.status?.name || "Draft", // 對接 Status 欄位
         createdAt: page.created_time,
         content: contentMarkdown, 
       };
