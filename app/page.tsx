@@ -1,11 +1,9 @@
-// app/page.tsx
 import Link from "next/link";
-import Script from "next/script"; // 🌟 引入 Next.js 的 Script 元件
+import Script from "next/script";
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-[#fbfbfd]">
-      {/* 🌟 載入 Tally 的動態高度腳本 */}
       <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
 
       {/* 🚀 1. Hero Section */}
@@ -89,11 +87,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* 🧲 3. 誘餌收集區 (Lead Magnet) - 完美嵌入 Tally */}
+      {/* 🧲 3. 誘餌收集區 (Lead Magnet) */}
       <section id="detox-tracker" className="py-24 bg-gradient-to-br from-blue-600 to-indigo-700 text-white relative overflow-hidden">
-        {/* 背景光暈點綴 */}
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-white opacity-5 blur-[120px] rounded-full pointer-events-none"></div>
-        
         <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
           <span className="inline-block py-1 px-3 rounded-full bg-white/20 text-white text-sm font-bold mb-6 border border-white/30 backdrop-blur-sm">
             🎁 Free Resource
@@ -102,8 +98,6 @@ export default function Home() {
           <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
             Get the exact Notion system I use to track subscriptions, find cheaper alternatives, and protect my profit margins. Sent straight to your inbox.
           </p>
-          
-          {/* 🌟 Tally 表單容器 */}
           <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl max-w-xl mx-auto text-left transform hover:scale-[1.01] transition-transform duration-300">
             <iframe 
               data-tally-src="https://tally.so/embed/jaB4O1?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
@@ -111,17 +105,14 @@ export default function Home() {
               width="100%" 
               height="250" 
               style={{ border: 0 }}
-              marginHeight={0} 
-              marginWidth={0} 
               title="Get the Free SaaS Detox Tracker 🛑">
             </iframe>
           </div>
-          <p className="text-blue-200 text-sm mt-6">Join 1,000+ solopreneurs optimizing their tech stack.</p>
         </div>
       </section>
 
       {/* 🧭 4. 分類導覽指南 (How It Works) */}
-      <section id="how-it-works" className="py-24 bg-white border-b border-slate-100">
+      <section id="how-it-works" className="py-24 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-bold text-slate-900 mb-4">How to Build Your Empire</h2>
@@ -130,33 +121,47 @@ export default function Home() {
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             <Link href="/protect" className="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all duration-300">
-              <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform shadow-sm">🛡️</div>
+              <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-6">🛡️</div>
               <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-emerald-700">1. Protect</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">Secure your digital footprint first. Essential VPNs (NordVPN, Surfshark) and password managers.</p>
-              <span className="text-emerald-600 font-semibold text-sm flex items-center gap-1">View Tools <span className="group-hover:translate-x-1 transition-transform">→</span></span>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">Secure your digital footprint first.</p>
+              <span className="text-emerald-600 font-semibold text-sm">View Tools →</span>
             </Link>
 
             <Link href="/build" className="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-fuchsia-50 hover:border-fuchsia-200 transition-all duration-300">
-              <div className="w-14 h-14 bg-fuchsia-100 text-fuchsia-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform shadow-sm">🏗️</div>
+              <div className="w-14 h-14 bg-fuchsia-100 text-fuchsia-600 rounded-2xl flex items-center justify-center text-2xl mb-6">🏗️</div>
               <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-fuchsia-700">2. Build</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">Construct your base. Compare lightweight website builders (Framer, Webflow) and communities.</p>
-              <span className="text-fuchsia-600 font-semibold text-sm flex items-center gap-1">View Tools <span className="group-hover:translate-x-1 transition-transform">→</span></span>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">Construct your base with lean tools.</p>
+              <span className="text-fuchsia-600 font-semibold text-sm">View Tools →</span>
             </Link>
 
             <Link href="/scale" className="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-orange-50 hover:border-orange-200 transition-all duration-300">
-              <div className="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform shadow-sm">🚀</div>
+              <div className="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-2xl mb-6">🚀</div>
               <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-orange-700">3. Scale</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">Multiply your reach. Discover affordable SEO tools (SE Ranking), email software, and automations.</p>
-              <span className="text-orange-600 font-semibold text-sm flex items-center gap-1">View Tools <span className="group-hover:translate-x-1 transition-transform">→</span></span>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">Multiply your reach and SEO.</p>
+              <span className="text-orange-600 font-semibold text-sm">View Tools →</span>
             </Link>
 
             <Link href="/stack" className="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-300">
-              <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6 group-hover:scale-110 transition-transform shadow-sm">🧠</div>
+              <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6">🧠</div>
               <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-700">4. Stack</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">Connect the dots. Find the ultimate productivity hubs (Notion) and daily operations software.</p>
-              <span className="text-blue-600 font-semibold text-sm flex items-center gap-1">View Tools <span className="group-hover:translate-x-1 transition-transform">→</span></span>
+              <p className="text-slate-500 text-sm leading-relaxed mb-6">Connect dots with a powerful hub.</p>
+              <span className="text-blue-600 font-semibold text-sm">View Tools →</span>
             </Link>
           </div>
+        </div>
+      </section>
+
+      {/* 🌟 5. 新增：首頁 Blog 導流區塊 */}
+      <section className="py-24 bg-slate-50 border-t border-slate-100">
+        <div className="max-w-4xl mx-auto px-4 text-center">
+          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">Latest AI Strategies & Deep Dives</h2>
+          <p className="text-lg text-slate-600 mb-10 leading-relaxed">
+            想知道我們如何利用 AI 自動化節省成本、優化工作流嗎？<br />
+            在我們的部落格中，我們分享最前沿的 AI 落地實戰案例與軟體深度評測。
+          </p>
+          <Link href="/blog" className="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-md hover:shadow-lg">
+            Read Our Blog <span className="ml-2">→</span>
+          </Link>
         </div>
       </section>
     </main>
