@@ -156,9 +156,9 @@ export default function Home() {
         <div className="max-w-4xl mx-auto px-4 text-center">
           <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">Latest AI Strategies & Deep Dives</h2>
           <p className="text-lg text-slate-600 mb-10 leading-relaxed">
-            想知道我們如何利用 AI 自動化節省成本、優化工作流嗎？<br />
-            在我們的部落格中，我們分享最前沿的 AI 落地實戰案例與軟體深度評測。
-          </p>
+  Discover how we leverage AI automation to cut costs and streamline workflows.<br />
+  Explore our blog for cutting-edge AI implementation cases and in-depth software reviews.
+</p>
           <Link href="/blog" className="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-md hover:shadow-lg">
             Read Our Blog <span className="ml-2">→</span>
           </Link>
