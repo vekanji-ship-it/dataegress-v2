@@ -22,6 +22,50 @@ export default async function StackPage() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
+          
+          {/* ✅ 橋接策略：AI 辦公室專屬卡片 (固定在第一順位) */}
+          <div className="bg-gradient-to-b from-[#FAFCFC] to-white backdrop-blur-sm rounded-[32px] shadow-lg border-2 border-[#01696F] p-8 hover:-translate-y-1 hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
+            {/* 裝飾背景 */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-[#01696F]/5 rounded-bl-[100px] -z-10"></div>
+            
+            <div>
+              <div className="flex justify-between items-start mb-4">
+                <h2 className="text-2xl font-bold text-[#01696F]">🏢 AI 辦公室</h2>
+                <span className="bg-yellow-100 text-yellow-800 text-sm font-bold px-3 py-1 rounded-full border border-yellow-200">
+                  4.9 ⭐
+                </span>
+              </div>
+              
+              <div className="mb-5">
+                <span className="bg-[#01696F] text-white text-xs font-bold px-3 py-1.5 rounded-md tracking-wider shadow-sm">
+                  [FEATURED] 我們團隊打造
+                </span>
+              </div>
+
+              <p className="text-slate-600 mb-6 leading-relaxed">
+                專為中小企業設計的 AI 自動化辦公平台。涵蓋文件生成、行銷自動化、Notion CRM 一站整合，告別繁瑣的重複性工作！
+              </p>
+            </div>
+            
+            <div className="flex flex-col gap-3 mt-auto pt-4 border-t border-slate-100">
+              <div className="flex justify-between items-center text-sm font-medium text-slate-500 mb-2">
+                <span>Starting at</span>
+                <span className="text-lg text-slate-900 font-bold">14天免費試用</span>
+              </div>
+              
+              <Link 
+                href="https://myaioffice-23xacjgzzynmwscxq5z2j8.streamlit.app/" 
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full text-center font-bold text-white bg-[#01696F] hover:bg-[#015358] shadow-lg shadow-[#01696F]/30 px-6 py-3 rounded-xl transition-all active:scale-95"
+              >
+                🚀 開始 14 天免費試用
+              </Link>
+            </div>
+          </div>
+          {/* ⬆️ AI 辦公室卡片結束 */}
+
+          {/* 原本從 Notion 抓取的工具清單 */}
           {stackTools.map((tool) => (
             <div key={tool.id} className="bg-white/80 backdrop-blur-sm rounded-[32px] shadow-lg border border-slate-200 p-8 hover:-translate-y-1 hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
               <div>
