@@ -1,169 +1,92 @@
 import Link from "next/link";
-import Script from "next/script";
+import Image from "next/image"; 
+import { getPublishedArticles } from "@/lib/notion"; 
 
-export default function Home() {
+export const revalidate = 60; 
+
+export default async function BlogIndex() {
+  const articles = await getPublishedArticles();
+
   return (
-    <main className="min-h-screen bg-[#fbfbfd]">
-      <Script src="https://tally.so/widgets/embed.js" strategy="lazyOnload" />
-
-      {/* 🚀 1. Hero Section */}
-      <section className="pt-32 pb-20 px-4 text-center max-w-5xl mx-auto">
-        <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-bold mb-8 uppercase tracking-wider">
-          For Solopreneurs & Digital Nomads
-        </div>
-        <h1 className="text-5xl md:text-7xl font-extrabold text-slate-900 tracking-tight mb-8 leading-tight">
-          The Ultimate Tech Stack <br className="hidden md:block" />
-          <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">
-            For One-Person Empires
-          </span>
-        </h1>
-        <p className="text-xl text-slate-600 mb-12 max-w-2xl mx-auto leading-relaxed">
-          The average founder wastes $3,000/year on bloated SaaS. We curate, test, and compare the most cost-effective tools to help you protect, build, and scale your digital business without the subscription fatigue.
+    <main className="max-w-6xl mx-auto py-16 px-6">
+      {/* --- 標題區塊 --- */}
+      <div className="mb-12 text-center">
+        <h1 className="text-5xl font-extrabold text-gray-900 mb-4">實作紀錄</h1>
+        <p className="text-xl text-gray-600">
+          用 AI 工具工作的真實過程，包含踩坑與修復。
+          <span className="block text-sm text-gray-400 mt-2">台灣・馬來西亞・新加坡</span>
         </p>
-        <div className="flex flex-col sm:flex-row justify-center gap-4">
-          <Link href="/checkup" className="px-8 py-4 bg-slate-900 text-white font-bold rounded-xl hover:bg-slate-800 transition-all text-lg shadow-lg hover:shadow-xl hover:-translate-y-1">
-            Free Privacy Checkup
-          </Link>
-          <a href="#detox-tracker" className="px-8 py-4 bg-white text-slate-900 border-2 border-slate-200 font-bold rounded-xl hover:border-blue-600 hover:text-blue-600 transition-all text-lg">
-            Get The Free Tracker
-          </a>
+      </div>
+
+      {/* --- 空狀態處理 --- */}
+      {articles.length === 0 ? (
+        <div className="p-8 bg-gray-50 rounded-lg border text-center">
+          <p className="text-gray-500">文章準備中，敬請期待！</p>
         </div>
-      </section>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {articles.map((article) => {
+            const isZH = article.slug.endsWith("-zh");
+            
+            return (
+              <Link 
+                href={`/blog/${article.slug}`} 
+                key={article.id} 
+                className="group relative block border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-blue-500 transition-all bg-white"
+              >
+                {/* 語系 Badge */}
+                <div className="absolute top-4 right-4 z-10">
+                  <span className={`
+                    text-[10px] uppercase font-bold px-2 py-1 rounded-full shadow-sm
+                    ${isZH 
+                      ? "bg-red-500 text-white"
+                      : "bg-blue-600 text-white"
+                    }
+                  `}>
+                    {isZH ? "繁體中文" : "English"}
+                  </span>
+                </div>
 
-      {/* ⚔️ 2. 真實痛點對決區 */}
-      <section className="py-20 bg-slate-900 text-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-red-400 font-bold tracking-wider uppercase text-sm mb-2 block">The 2026 Reality</span>
-            <h2 className="text-3xl md:text-4xl font-bold mb-4">Stop Bleeding Money & Leaking Data.</h2>
-            <p className="text-slate-400 text-lg max-w-2xl mx-auto">
-              80% of US consumers received a data breach notice last year, and 41% are suffering from SaaS subscription fatigue. It's time to cut the bloat.
-            </p>
-          </div>
+                {/* --- 封面圖片區塊 --- */}
+                <div className="relative aspect-video w-full bg-gray-100 overflow-hidden">
+                  {article.coverImage ? (
+                    <Image
+                      src={article.coverImage}
+                      alt={article.title}
+                      fill
+                      className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      sizes="(max-w-768px) 100vw, (max-w-1200px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <div className="flex items-center justify-center h-full text-gray-400 font-bold tracking-tighter">
+                      DataEgress
+                    </div>
+                  )}
+                </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
-              <div className="flex items-center gap-3 text-red-400 mb-4">
-                <span className="text-xl">❌</span>
-                <span className="font-semibold line-through opacity-70">Paying $140/mo for Semrush</span>
-              </div>
-              <div className="flex items-start gap-3 text-emerald-400 mb-6">
-                <span className="text-xl">✅</span>
-                <p className="font-semibold leading-snug">Switch to SE Ranking for $55/mo and keep the exact same core SEO features.</p>
-              </div>
-              <Link href="/comparisons/semrush-vs-se-ranking" className="block w-full text-center py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors">
-                Read the Breakdown →
+                {/* --- 文字內容區塊 --- */}
+                <div className="p-6">
+                  <h2 className="text-2xl font-semibold mb-3 text-gray-800 group-hover:text-blue-600 line-clamp-2">
+                    {article.title}
+                  </h2>
+                  <div className="flex items-center justify-between mt-4">
+                    <p className="text-gray-500 text-xs">
+                      發布於：{new Date(article.createdAt).toLocaleDateString('zh-TW', {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric'
+                      })}
+                    </p>
+                    <span className="text-blue-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                      閱讀更多 →
+                    </span>
+                  </div>
+                </div>
               </Link>
-            </div>
-
-            <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
-              <div className="flex items-center gap-3 text-red-400 mb-4">
-                <span className="text-xl">❌</span>
-                <span className="font-semibold line-through opacity-70">Laggy & Expensive ClickUp</span>
-              </div>
-              <div className="flex items-start gap-3 text-emerald-400 mb-6">
-                <span className="text-xl">✅</span>
-                <p className="font-semibold leading-snug">Build a blazing fast, customizable, and flat-priced brain in Notion.</p>
-              </div>
-              <Link href="/comparisons/notion-vs-clickup" className="block w-full text-center py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors">
-                See Why Notion Wins →
-              </Link>
-            </div>
-
-            <div className="bg-slate-800/50 rounded-2xl p-6 border border-slate-700">
-              <div className="flex items-center gap-3 text-red-400 mb-4">
-                <span className="text-xl">❌</span>
-                <span className="font-semibold line-through opacity-70">Using public Wi-Fi unprotected</span>
-              </div>
-              <div className="flex items-start gap-3 text-emerald-400 mb-6">
-                <span className="text-xl">✅</span>
-                <p className="font-semibold leading-snug">Lock down your digital nomad traffic with NordVPN or Surfshark.</p>
-              </div>
-              <Link href="/comparisons/nordvpn-vs-surfshark" className="block w-full text-center py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-xl font-medium transition-colors">
-                Compare Top VPNs →
-              </Link>
-            </div>
-          </div>
+            );
+          })}
         </div>
-      </section>
-
-      {/* 🧲 3. 誘餌收集區 (Lead Magnet) */}
-      <section id="detox-tracker" className="py-24 bg-gradient-to-br from-blue-600 to-indigo-700 text-white relative overflow-hidden">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-full bg-white opacity-5 blur-[120px] rounded-full pointer-events-none"></div>
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 relative z-10 text-center">
-          <span className="inline-block py-1 px-3 rounded-full bg-white/20 text-white text-sm font-bold mb-6 border border-white/30 backdrop-blur-sm">
-            🎁 Free Resource
-          </span>
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">Stop Bleeding $3,000/yr on Bloated SaaS.</h2>
-          <p className="text-xl text-blue-100 mb-10 max-w-2xl mx-auto">
-            Get the exact Notion system I use to track subscriptions, find cheaper alternatives, and protect my profit margins. Sent straight to your inbox.
-          </p>
-          <div className="bg-white rounded-3xl p-6 sm:p-10 shadow-2xl max-w-xl mx-auto text-left transform hover:scale-[1.01] transition-transform duration-300">
-            <iframe 
-              data-tally-src="https://tally.so/embed/jaB4O1?alignLeft=1&hideTitle=1&transparentBackground=1&dynamicHeight=1" 
-              loading="lazy" 
-              width="100%" 
-              height="250" 
-              style={{ border: 0 }}
-              title="Get the Free SaaS Detox Tracker 🛑">
-            </iframe>
-          </div>
-        </div>
-      </section>
-
-      {/* 🧭 4. 分類導覽指南 (How It Works) */}
-      <section id="how-it-works" className="py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-bold text-slate-900 mb-4">How to Build Your Empire</h2>
-            <p className="text-slate-500 text-lg">Follow our 4-step framework to assemble your perfect, lean toolkit.</p>
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <Link href="/protect" className="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-emerald-50 hover:border-emerald-200 transition-all duration-300">
-              <div className="w-14 h-14 bg-emerald-100 text-emerald-600 rounded-2xl flex items-center justify-center text-2xl mb-6">🛡️</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-emerald-700">1. Protect</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">Secure your digital footprint first.</p>
-              <span className="text-emerald-600 font-semibold text-sm">View Tools →</span>
-            </Link>
-
-            <Link href="/build" className="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-fuchsia-50 hover:border-fuchsia-200 transition-all duration-300">
-              <div className="w-14 h-14 bg-fuchsia-100 text-fuchsia-600 rounded-2xl flex items-center justify-center text-2xl mb-6">🏗️</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-fuchsia-700">2. Build</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">Construct your base with lean tools.</p>
-              <span className="text-fuchsia-600 font-semibold text-sm">View Tools →</span>
-            </Link>
-
-            <Link href="/scale" className="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-orange-50 hover:border-orange-200 transition-all duration-300">
-              <div className="w-14 h-14 bg-orange-100 text-orange-600 rounded-2xl flex items-center justify-center text-2xl mb-6">🚀</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-orange-700">3. Scale</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">Multiply your reach and SEO.</p>
-              <span className="text-orange-600 font-semibold text-sm">View Tools →</span>
-            </Link>
-
-            <Link href="/stack" className="group p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:bg-blue-50 hover:border-blue-200 transition-all duration-300">
-              <div className="w-14 h-14 bg-blue-100 text-blue-600 rounded-2xl flex items-center justify-center text-2xl mb-6">🧠</div>
-              <h3 className="text-xl font-bold text-slate-900 mb-3 group-hover:text-blue-700">4. Stack</h3>
-              <p className="text-slate-500 text-sm leading-relaxed mb-6">Connect dots with a powerful hub.</p>
-              <span className="text-blue-600 font-semibold text-sm">View Tools →</span>
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 🌟 5. 新增：首頁 Blog 導流區塊 */}
-      <section className="py-24 bg-slate-50 border-t border-slate-100">
-        <div className="max-w-4xl mx-auto px-4 text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-slate-900 mb-6">Latest AI Strategies & Deep Dives</h2>
-          <p className="text-lg text-slate-600 mb-10 leading-relaxed">
-  Discover how we leverage AI automation to cut costs and streamline workflows.<br />
-  Explore our blog for cutting-edge AI implementation cases and in-depth software reviews.
-</p>
-          <Link href="/blog" className="inline-flex items-center px-8 py-4 bg-blue-600 text-white font-bold rounded-2xl hover:bg-blue-700 transition-all shadow-md hover:shadow-lg">
-            Read Our Blog <span className="ml-2">→</span>
-          </Link>
-        </div>
-      </section>
+      )}
     </main>
   );
 }

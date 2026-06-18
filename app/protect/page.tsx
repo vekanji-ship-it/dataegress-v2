@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default async function ProtectPage() {
   const allTools = await getSaaSTools();
   const protectTools = allTools.filter((tool) => 
-    tool.category.some(c => ['Security', 'VPN', 'Privacy', 'Password Manager'].includes(c))
+    tool.category.some(c => ['Security', 'VPN', 'Privacy', 'Password Manager', 'AI'].includes(c))
   );
 
   return (
@@ -12,8 +12,11 @@ export default async function ProtectPage() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-extrabold text-slate-900 mb-6">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">Protect</span> Your Digital Life
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-emerald-500 to-teal-600">認識工具</span>，從這裡開始
           </h1>
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+            搞懂每個 AI 工具到底在解決什麼問題，再決定要不要用。
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
@@ -29,11 +32,11 @@ export default async function ProtectPage() {
                   target="_blank"
                   className="w-full text-center font-bold text-white bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 px-6 py-3 rounded-xl shadow-md transition-all"
                 >
-                  Get {tool.name}
+                  免費試用 {tool.name}
                 </Link>
                 {tool.slug && (
                   <Link href={`/comparisons/${tool.slug}`} className="text-center text-sm font-medium text-slate-500 hover:text-emerald-600 transition-colors">
-                    Analyze Security Review →
+                    查看詳細評測 →
                   </Link>
                 )}
               </div>

@@ -7,12 +7,12 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Checkup', href: '/checkup' },
-    { name: 'Protect', href: '/protect' },
-    { name: 'Build', href: '/build' },
-    { name: 'Scale', href: '/scale' },
-    { name: 'Stack', href: '/stack' },
-    { name: 'Blog', href: '/blog' }, // 🌟 新增 Blog 連結
+    { name: '工具診斷', href: '/checkup' },
+    { name: '認識工具', href: '/protect' },
+    { name: '選對工具', href: '/build' },
+    { name: '上手實作', href: '/scale' },
+    { name: '自動化串接', href: '/stack' },
+    { name: '部落格', href: '/blog' },
   ];
 
   return (
@@ -36,13 +36,13 @@ export default function Navbar() {
 
           <div className="hidden md:flex items-center">
             <Link href="/newsletter" className="inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 transition-colors">
-              Join Newsletter
+              訂閱電子報
             </Link>
           </div>
 
           <div className="flex md:hidden items-center space-x-4">
             <Link href="/newsletter" className="inline-flex items-center justify-center px-4 py-2 border border-transparent rounded-full shadow-sm text-sm font-medium text-white bg-slate-900 hover:bg-slate-800 transition-colors">
-              Join
+              訂閱
             </Link>
             
             <button
@@ -50,7 +50,7 @@ export default function Navbar() {
               className="bg-slate-50 rounded-md p-2 inline-flex items-center justify-center text-slate-500 hover:text-slate-700 hover:bg-slate-100 focus:outline-none transition-colors"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
             >
-              <span className="sr-only">Open main menu</span>
+              <span className="sr-only">開啟選單</span>
               {!isMobileMenuOpen ? (
                 <svg className="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
@@ -83,7 +83,7 @@ export default function Navbar() {
               onClick={() => setIsMobileMenuOpen(false)}
               className="block px-3 py-3 mt-4 text-center rounded-xl text-base font-bold text-white bg-blue-600 hover:bg-blue-700 transition-colors shadow-sm"
             >
-              Subscribe to Newsletter
+              訂閱電子報
             </Link>
           </div>
         </div>

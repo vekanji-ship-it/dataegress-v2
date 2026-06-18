@@ -17,22 +17,22 @@ interface ComparisonTableProps {
 export default function ComparisonTable({ productA, productB }: ComparisonTableProps) {
   return (
     <div className="max-w-4xl mx-auto my-16 px-4 sm:px-6">
-      <h2 className="text-3xl font-bold text-center text-slate-900 mb-10">Head-to-Head Comparison</h2>
+      <h2 className="text-3xl font-bold text-center text-slate-900 mb-10">功能比較表</h2>
       
       <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
         <div className="grid grid-cols-3 bg-slate-50 border-b border-slate-200 divide-x divide-slate-200 text-center">
-          <div className="p-6 font-semibold text-slate-500 uppercase tracking-wider text-sm flex items-center justify-center">Features</div>
+          <div className="p-6 font-semibold text-slate-500 uppercase tracking-wider text-sm flex items-center justify-center">功能</div>
           
           {/* Product A Header */}
           <div className={`p-6 flex flex-col items-center ${productA.isWinner ? 'bg-blue-50/50' : ''}`}>
-            {productA.isWinner && <span className="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded mb-2 uppercase tracking-wide">🏆 Winner</span>}
+            {productA.isWinner && <span className="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded mb-2 uppercase tracking-wide">🏆 推薦</span>}
             <h3 className="text-2xl font-bold text-slate-900">{productA.name}</h3>
             <p className="text-slate-500 mt-1">{productA.price}</p>
           </div>
 
           {/* Product B Header */}
           <div className={`p-6 flex flex-col items-center ${productB.isWinner ? 'bg-blue-50/50' : ''}`}>
-            {productB.isWinner && <span className="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded mb-2 uppercase tracking-wide">🏆 Winner</span>}
+            {productB.isWinner && <span className="text-xs font-bold text-blue-600 bg-blue-100 px-2 py-1 rounded mb-2 uppercase tracking-wide">🏆 推薦</span>}
             <h3 className="text-2xl font-bold text-slate-900">{productB.name}</h3>
             <p className="text-slate-500 mt-1">{productB.price}</p>
           </div>
@@ -68,12 +68,12 @@ export default function ComparisonTable({ productA, productB }: ComparisonTableP
           <div></div>
           <div className="px-4">
             <Link href={productA.url} target="_blank" className={`block w-full rounded-lg py-3 text-sm font-bold shadow-sm transition-all ${productA.isWinner ? 'bg-blue-600 text-white hover:bg-blue-500' : 'bg-white text-slate-900 border border-slate-300 hover:bg-slate-50'}`}>
-              Get {productA.name}
+              立即使用 {productA.name}
             </Link>
           </div>
           <div className="px-4">
             <Link href={productB.url} target="_blank" className={`block w-full rounded-lg py-3 text-sm font-bold shadow-sm transition-all ${productB.isWinner ? 'bg-blue-600 text-white hover:bg-blue-500' : 'bg-white text-slate-900 border border-slate-300 hover:bg-slate-50'}`}>
-              Get {productB.name}
+              立即使用 {productB.name}
             </Link>
           </div>
         </div>

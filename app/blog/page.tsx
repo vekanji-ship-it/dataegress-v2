@@ -2,7 +2,6 @@ import Link from "next/link";
 import Image from "next/image"; 
 import { getPublishedArticles } from "@/lib/notion"; 
 
-// 設定每 60 秒重新校準一次資料庫，確保 AI 生產後能快速顯示
 export const revalidate = 60; 
 
 export default async function BlogIndex() {
@@ -12,24 +11,21 @@ export default async function BlogIndex() {
     <main className="max-w-6xl mx-auto py-16 px-6">
       {/* --- 標題區塊 --- */}
       <div className="mb-12 text-center">
-        <h1 className="text-5xl font-extrabold text-gray-900 mb-4">DataEgress Blog</h1>
+        <h1 className="text-5xl font-extrabold text-gray-900 mb-4">實作紀錄</h1>
         <p className="text-xl text-gray-600">
-          Curated SaaS optimization guides & digital nomad strategies.
-          <span className="block text-sm text-gray-400 mt-2">Now serving both Global & Asian markets.</span>
+          用 AI 工具工作的真實過程，包含踩坑與修復。
+          <span className="block text-sm text-gray-400 mt-2">台灣・馬來西亞・新加坡</span>
         </p>
       </div>
 
       {/* --- 空狀態處理 --- */}
       {articles.length === 0 ? (
         <div className="p-8 bg-gray-50 rounded-lg border text-center">
-          <p className="text-gray-500">No articles yet! Check back soon.</p>
+          <p className="text-gray-500">文章準備中，敬請期待！</p>
         </div>
       ) : (
-        /* --- 文章網格系統 (V7.0 多語系優化版) --- */
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {articles.map((article) => {
-            // 🌟 核心增強：語系自動識別邏輯
-            // 檢查 slug 是否以 -zh 結尾來判斷語系
             const isZH = article.slug.endsWith("-zh");
             
             return (
@@ -38,13 +34,13 @@ export default async function BlogIndex() {
                 key={article.id} 
                 className="group relative block border border-gray-200 rounded-2xl overflow-hidden hover:shadow-xl hover:border-blue-500 transition-all bg-white"
               >
-                {/* 🌟 核心增強：語系 Badge (UI 標籤) */}
+                {/* 語系 Badge */}
                 <div className="absolute top-4 right-4 z-10">
                   <span className={`
                     text-[10px] uppercase font-bold px-2 py-1 rounded-full shadow-sm
                     ${isZH 
-                      ? "bg-red-500 text-white" // 繁中版使用熱情的紅色
-                      : "bg-blue-600 text-white" // 英文版使用專業的深藍
+                      ? "bg-red-500 text-white"
+                      : "bg-blue-600 text-white"
                     }
                   `}>
                     {isZH ? "繁體中文" : "English"}
@@ -75,15 +71,14 @@ export default async function BlogIndex() {
                   </h2>
                   <div className="flex items-center justify-between mt-4">
                     <p className="text-gray-500 text-xs">
-                      Published on: {new Date(article.createdAt).toLocaleDateString('en-US', {
+                      發布於：{new Date(article.createdAt).toLocaleDateString('zh-TW', {
                         year: 'numeric',
-                        month: 'short',
+                        month: 'long',
                         day: 'numeric'
                       })}
                     </p>
-                    {/* 閱讀更多提示 */}
                     <span className="text-blue-500 text-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-                      Read More →
+                      閱讀更多 →
                     </span>
                   </div>
                 </div>

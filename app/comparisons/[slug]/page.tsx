@@ -7,23 +7,83 @@ import ReactMarkdown from 'react-markdown';
 import Link from 'next/link';
 
 const competitorData: Record<string, any> = {
-  // === 原有對手 ===
-  "snov-io-vs-lemlist-2026-review": { name: "Lemlist", price: "From $59/mo", url: "https://lemlist.com", features: [{ name: "Cold Email Drip Campaigns", included: true }, { name: "Email Finder Extension", included: false }, { name: "Built-in CRM", included: false }] },
-  "semrush-vs-se-ranking": { name: "SE Ranking", price: "From $55/mo", url: "https://seranking.com", features: [{ name: "Keyword Tracking", included: true }, { name: "Competitor Analysis", included: true }, { name: "Site Audit", included: true }] },
-  "nordvpn-vs-surfshark": { name: "Surfshark", price: "From $2.49/mo", url: "https://surfshark.com", features: [{ name: "Unlimited Devices", included: true }, { name: "Dedicated IP Address", included: false }, { name: "Ad Blocker", included: true }] },
-  "1password-vs-bitwarden": { name: "Bitwarden", price: "Free / $10/yr", url: "https://bitwarden.com", features: [{ name: "Open Source", included: true }, { name: "Travel Mode", included: false }, { name: "Unlimited Passwords", included: true }] },
-  "notion-vs-clickup": { name: "ClickUp", price: "From $7/mo", url: "https://clickup.com", features: [{ name: "Pre-built Dashboards", included: true }, { name: "Native Time Tracking", included: true }, { name: "Fast & Lightweight", included: false }] },
-  "surfer-seo-review": { name: "Clearscope", price: "From $170/mo", url: "https://www.clearscope.io", features: [{ name: "Content Optimization", included: true }, { name: "Keyword Research", included: true }, { name: "Affordable Pricing", included: false }] },
-  "beehiiv-review": { name: "Substack", price: "Free", url: "https://substack.com", features: [{ name: "Newsletter Sending", included: true }, { name: "0% Revenue Cut", included: false }, { name: "Advanced API", included: false }] },
-  "skool-review": { name: "Circle", price: "From $49/mo", url: "https://circle.so", features: [{ name: "Community Spaces", included: true }, { name: "Built-in Gamification", included: false }, { name: "Unlimited Courses", included: true }] },
-  "webflow-review": { name: "WordPress", price: "Free (Hosting varies)", url: "https://wordpress.org", features: [{ name: "Visual Canvas", included: false }, { name: "Plugin Ecosystem", included: true }, { name: "No Maintenance", included: false }] },
-  "hostinger-review": { name: "Bluehost", price: "From $2.95/mo", url: "https://www.bluehost.com", features: [{ name: "cPanel", included: true }, { name: "LiteSpeed Servers", included: false }, { name: "24/7 Support", included: true }] },
-  "surfshark-review": { name: "ExpressVPN", price: "From $6.67/mo", url: "https://www.expressvpn.com", features: [{ name: "High Speed", included: true }, { name: "Unlimited Devices", included: false }, { name: "No-logs Policy", included: true }] },
-  "clickup-review": { name: "Asana", price: "From $10.99/mo", url: "https://asana.com", features: [{ name: "Task Management", included: true }, { name: "Complex Dashboards", included: false }, { name: "Beginner Friendly", included: true }] },
-  "framer-review": { name: "Webflow", price: "From $14/mo", url: "https://webflow.com", features: [{ name: "Visual Canvas", included: true }, { name: "Complex CMS", included: true }, { name: "Steep Learning Curve", included: true }] },
-  
-  // ✅ 新增：LogMeOnce 對手資料
-  "logmeonce": { name: "1Password", price: "From $2.99/mo", url: "https://1password.com", features: [{ name: "Anti-Hacker Mugshot", included: false }, { name: "Dark Web Scan", included: true }, { name: "Military-grade Encryption", included: true }, { name: "45-Day Cookie", included: false }] }
+  "beehiiv-review": {
+    name: "Substack",
+    price: "免費（抽成 10%）",
+    url: "https://substack.com",
+    features: [
+      { name: "電子報發送", included: true },
+      { name: "0% 收入抽成", included: false },
+      { name: "內建廣告媒合", included: false },
+      { name: "內建推薦機制", included: false },
+    ]
+  },
+  "make-review": {
+    name: "Zapier",
+    price: "From $19.99/mo",
+    url: "https://zapier.com",
+    features: [
+      { name: "視覺化流程設計", included: false },
+      { name: "免費方案 1,000 次/月", included: false },
+      { name: "支援複雜條件邏輯", included: false },
+      { name: "亞洲社群支援", included: false },
+    ]
+  },
+  "framer-review": {
+    name: "Webflow",
+    price: "From $14/mo",
+    url: "https://webflow.com",
+    features: [
+      { name: "視覺化編輯器", included: true },
+      { name: "AI 輔助生成", included: false },
+      { name: "適合設計初學者", included: false },
+      { name: "免費方案可用", included: true },
+    ]
+  },
+  "notion-vs-clickup": {
+    name: "ClickUp",
+    price: "From $7/mo",
+    url: "https://clickup.com",
+    features: [
+      { name: "資料庫功能", included: false },
+      { name: "AI 功能內建", included: false },
+      { name: "介面簡潔", included: false },
+      { name: "免費方案完整", included: true },
+    ]
+  },
+  "hostinger-review": {
+    name: "Bluehost",
+    price: "From $2.95/mo",
+    url: "https://www.bluehost.com",
+    features: [
+      { name: "亞洲伺服器節點", included: false },
+      { name: "介面簡潔易用", included: false },
+      { name: "含免費網域", included: true },
+      { name: "續約價格穩定", included: false },
+    ]
+  },
+  "canva-review": {
+    name: "Adobe Express",
+    price: "Free / $9.99/mo",
+    url: "https://www.adobe.com/express",
+    features: [
+      { name: "海量模板", included: false },
+      { name: "免費方案功能完整", included: false },
+      { name: "AI 功能豐富", included: false },
+      { name: "台灣用戶熟悉", included: false },
+    ]
+  },
+  "gamma-review": {
+    name: "Google Slides",
+    price: "免費",
+    url: "https://slides.google.com",
+    features: [
+      { name: "AI 自動生成簡報", included: false },
+      { name: "排版自動化", included: false },
+      { name: "可分享網頁連結", included: true },
+      { name: "學習成本極低", included: false },
+    ]
+  },
 };
 
 export default async function ComparisonArticle({ params }: { params: Promise<{ slug: string }> }) {
@@ -35,33 +95,38 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
   if (!productA_Notion) {
     return (
       <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center p-8 text-center">
-        <h1 className="text-2xl font-bold text-red-600 mb-4">The review for "{currentSlug}" is coming soon!</h1>
-        <p className="text-slate-500">We are still writing this deep-dive comparison.</p>
-        <Link href="/stack" className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg">Go Back</Link>
+        <h1 className="text-2xl font-bold text-slate-700 mb-4">「{currentSlug}」的評測即將上線！</h1>
+        <p className="text-slate-500">我們正在撰寫這篇深度比較文章，敬請期待。</p>
+        <Link href="/build" className="mt-6 px-6 py-2 bg-blue-600 text-white rounded-lg">回到工具列表</Link>
       </div>
     );
   }
 
   const markdownContent = await getNotionPageContent(productA_Notion.id);
-  const productB_Data = competitorData[currentSlug] || { name: "Alternative Tool", price: "Varies", url: "#", features: [] };
+  const productB_Data = competitorData[currentSlug] || {
+    name: "其他替代工具",
+    price: "方案不一",
+    url: "#",
+    features: []
+  };
   const safePros = Array.isArray(productA_Notion.pros) ? productA_Notion.pros : [];
 
   const productA = {
-    name: productA_Notion.name || "Product",
-    price: productA_Notion.pricing || "Varies",
+    name: productA_Notion.name || "工具",
+    price: productA_Notion.pricing || "方案不一",
     url: productA_Notion.affiliateUrl || "#",
     isWinner: true,
-    features: safePros.length > 0 ? safePros.map(pro => ({ name: String(pro), included: true })) : [{ name: "Core Feature 1", included: true }]
+    features: safePros.length > 0
+      ? safePros.map(pro => ({ name: String(pro), included: true }))
+      : [{ name: "核心功能", included: true }]
   };
 
-  // 🚨 營運長的安全護墊：強迫 Product B 陣列長度永遠對齊 Product A，徹底消滅 reading 'included' 錯誤
   const productB = {
-    name: productB_Data.name || "Alternative",
-    price: productB_Data.price || "Varies",
+    name: productB_Data.name || "替代工具",
+    price: productB_Data.price || "方案不一",
     url: productB_Data.url || "#",
     isWinner: false,
     features: productA.features.map((aFeature, index) => {
-      // 確保即使對手功能寫得比較少，也不會變成 undefined
       const bFeature = productB_Data.features ? productB_Data.features[index] : null;
       return {
         name: bFeature ? bFeature.name : aFeature.name,
@@ -70,17 +135,22 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     })
   };
 
+  // 分類路由（繁中）
   let backLink = "/scale";
-  let backCategoryName = "Marketing & SEO";
+  let backCategoryName = "上手實作";
   let backColor = "hover:text-orange-600";
-  const categories = Array.isArray(productA_Notion.category) ? productA_Notion.category.join(' ') : (productA_Notion.category || '');
+  const categories = Array.isArray(productA_Notion.category)
+    ? productA_Notion.category.join(' ')
+    : (productA_Notion.category || '');
 
-  if (categories.includes('Security') || categories.includes('VPN') || categories.includes('Privacy') || categories.includes('Identity Protection')) {
-    backLink = "/protect"; backCategoryName = "Security & Privacy"; backColor = "hover:text-emerald-600"; 
-  } else if (categories.includes('Stack') || categories.includes('Productivity') || productA_Notion.name === 'Notion') {
-    backLink = "/stack"; backCategoryName = "Productivity Stack"; backColor = "hover:text-blue-600";
-  } else if (categories.includes('Web Design') || categories.includes('Hosting') || categories.includes('Community')) {
-    backLink = "/build"; backCategoryName = "Build Your Empire"; backColor = "hover:text-fuchsia-600";
+  if (categories.includes('Automation') || categories.includes('Productivity') || categories.includes('Stack')) {
+    backLink = "/stack"; backCategoryName = "自動化串接"; backColor = "hover:text-blue-600";
+  } else if (categories.includes('Web Design') || categories.includes('Hosting')) {
+    backLink = "/build"; backCategoryName = "選對工具"; backColor = "hover:text-fuchsia-600";
+  } else if (categories.includes('Newsletter') || categories.includes('AI') || categories.includes('Marketing')) {
+    backLink = "/scale"; backCategoryName = "上手實作"; backColor = "hover:text-orange-600";
+  } else if (categories.includes('Security') || categories.includes('VPN') || categories.includes('Privacy')) {
+    backLink = "/protect"; backCategoryName = "認識工具"; backColor = "hover:text-emerald-600";
   }
 
   return (
@@ -89,17 +159,18 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
       <article className="min-h-screen bg-slate-50 pb-20">
         <div className="max-w-7xl mx-auto px-4 pt-8">
           <Link href={backLink} className={`inline-flex items-center text-sm font-medium text-slate-500 transition-colors ${backColor}`}>
-            ← Back to {backCategoryName}
+            ← 回到{backCategoryName}
           </Link>
         </div>
 
         <VideoHero 
           title={`${productA.name} vs ${productB.name}`}
-          subtitle={productA_Notion.tagline || `We tested both platforms. Here is why ${productA.name} wins.`}
+          subtitle={productA_Notion.tagline || `我們實際測試了兩個工具，以下是為什麼推薦 ${productA.name}。`}
           winnerName={productA.name}
           winnerUrl={productA.url}
           videoUrl={productA_Notion.videoUrl || undefined} 
         />
+
         <ComparisonTable productA={productA} productB={productB} />
         
         <div className="max-w-3xl mx-auto px-4 mt-12">
@@ -109,8 +180,8 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
             </div>
           ) : (
             <div className="prose prose-slate lg:prose-xl text-slate-700 text-center">
-              <h2 className="text-3xl font-bold mb-6 text-slate-900">Why {productA.name} Wins</h2>
-              <p>Based on our analysis, {productA.name} is the superior choice for solo users.</p>
+              <h2 className="text-3xl font-bold mb-6 text-slate-900">為什麼推薦 {productA.name}</h2>
+              <p>根據我們的實際測試，{productA.name} 是目前最適合上班族和學生的選擇。</p>
             </div>
           )}
         </div>

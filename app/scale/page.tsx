@@ -12,8 +12,11 @@ export default async function ScalePage() {
       <div className="max-w-7xl mx-auto px-4">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-extrabold text-slate-900 mb-6">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-600">Scale</span> Your Solo Business
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-500 to-rose-600">上手實作</span>，跟著案例做
           </h1>
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+            跟著真實案例，一步一步把工具用起來。
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
@@ -29,11 +32,11 @@ export default async function ScalePage() {
                   target="_blank"
                   className="w-full text-center font-bold text-white bg-gradient-to-r from-orange-500 to-rose-600 hover:from-orange-400 hover:to-rose-500 px-6 py-3 rounded-xl shadow-md transition-all"
                 >
-                  Get {tool.name}
+                  免費試用 {tool.name}
                 </Link>
                 {tool.slug && (
                   <Link href={`/comparisons/${tool.slug}`} className="text-center text-sm font-medium text-slate-500 hover:text-orange-600 transition-colors">
-                    Read Full Comparison →
+                    查看完整比較 →
                   </Link>
                 )}
               </div>

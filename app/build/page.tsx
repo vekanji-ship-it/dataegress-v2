@@ -4,7 +4,7 @@ import Link from 'next/link';
 export default async function BuildPage() {
   const allTools = await getSaaSTools();
   const buildTools = allTools.filter((tool) => 
-    tool.category.some(c => ['Web Design', 'Community / Courses', 'Hosting'].includes(c))
+    tool.category.some(c => ['Web Design', 'Community / Courses', 'Hosting', 'AI'].includes(c))
   );
 
   return (
@@ -12,8 +12,11 @@ export default async function BuildPage() {
       <div className="max-w-7xl mx-auto">
         <div className="text-center mb-16">
           <h1 className="text-5xl font-extrabold text-slate-900 mb-6">
-            <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-purple-600">Build</span> Your Digital Empire
+            <span className="text-transparent bg-clip-text bg-gradient-to-r from-fuchsia-500 to-purple-600">選對工具</span>，不花冤枉錢
           </h1>
+          <p className="text-slate-500 text-lg max-w-2xl mx-auto">
+            比較實際差異，幫你找到適合自己的選項。
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 relative z-10">
@@ -30,11 +33,11 @@ export default async function BuildPage() {
                   rel="noopener noreferrer"
                   className="w-full text-center font-bold text-white bg-gradient-to-r from-fuchsia-500 to-purple-600 hover:from-fuchsia-400 hover:to-purple-500 px-6 py-3 rounded-xl shadow-md transition-all"
                 >
-                  Get {tool.name}
+                  免費試用 {tool.name}
                 </Link>
                 {tool.slug && (
                   <Link href={`/comparisons/${tool.slug}`} className="text-center text-sm font-medium text-slate-500 hover:text-fuchsia-600 transition-colors py-1">
-                    Read Expert Review →
+                    查看比較評測 →
                   </Link>
                 )}
               </div>

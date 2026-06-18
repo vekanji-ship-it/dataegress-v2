@@ -11,49 +11,46 @@ export default function Footer() {
               DataEgress<span className="text-blue-500">.</span>
             </Link>
             <p className="text-sm leading-relaxed max-w-sm">
-              We help solopreneurs and digital nomads build, secure, and scale their digital assets. Honest reviews, automated workflows, and privacy first.
+              記錄上班族與學生用 AI 工具實際工作的過程，包含踩坑與成功案例。不賣神話，只說真實。
             </p>
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Categories</h3>
+            <h3 className="text-white font-semibold mb-4">內容分類</h3>
             <ul className="space-y-3 text-sm">
-              <li><Link href="/protect" className="hover:text-white transition-colors">Protect (Security)</Link></li>
-              <li><Link href="/build" className="hover:text-white transition-colors">Build (Web & Hosting)</Link></li>
-              <li><Link href="/scale" className="hover:text-white transition-colors">Scale (Marketing & SEO)</Link></li>
-              <li><Link href="/stack" className="hover:text-white transition-colors">Stack (Productivity)</Link></li>
-              <li><Link href="/blog" className="hover:text-white transition-colors font-medium text-blue-400">Blog (AI Insights)</Link></li> {/* 🌟 新增 Blog 連結 */}
+              <li><Link href="/protect" className="hover:text-white transition-colors">認識工具</Link></li>
+              <li><Link href="/build" className="hover:text-white transition-colors">選對工具</Link></li>
+              <li><Link href="/scale" className="hover:text-white transition-colors">上手實作</Link></li>
+              <li><Link href="/stack" className="hover:text-white transition-colors">自動化串接</Link></li>
+              <li><Link href="/blog" className="hover:text-white transition-colors font-medium text-blue-400">部落格</Link></li>
             </ul>
           </div>
 
           <div>
-            <h3 className="text-white font-semibold mb-4">Legal</h3>
+            <h3 className="text-white font-semibold mb-4">法律聲明</h3>
             <ul className="space-y-3 text-sm">
-              <li><Link href="/privacy" className="hover:text-white transition-colors">Privacy Policy</Link></li>
-              <li><Link href="/terms" className="hover:text-white transition-colors">Terms of Service</Link></li>
-              <li><Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link></li>
+              <li><Link href="/privacy" className="hover:text-white transition-colors">隱私權政策</Link></li>
+              <li><Link href="/terms" className="hover:text-white transition-colors">服務條款</Link></li>
+              <li><Link href="/contact" className="hover:text-white transition-colors">聯絡我們</Link></li>
             </ul>
           </div>
         </div>
 
         <div className="bg-slate-800/50 rounded-xl p-6 mb-8 text-xs leading-relaxed border border-slate-700/50">
-          <strong className="text-slate-300">Affiliate Disclosure: </strong>
-          DataEgress is reader-supported. When you buy through links on our site, we may earn an affiliate commission at no extra cost to you. Our reviews are based on independent research and our own 30-day rigorous testing methodology.
+          <strong className="text-slate-300">聯盟行銷聲明：</strong>
+          本網站部分連結為聯盟行銷連結，透過連結購買商品或服務時，我們可能獲得佣金，對你的費用不會有任何影響。所有工具評測均基於我們的實際使用體驗與獨立研究。
         </div>
 
         <div className="flex flex-col md:flex-row justify-between items-center text-xs border-t border-slate-800 pt-8">
           <p>© {new Date().getFullYear()} DataEgress. All rights reserved.</p>
           <div className="mt-4 md:mt-0 flex space-x-6">
-            <Link href="/" className="hover:text-white transition-colors">
-              Twitter (X)
-            </Link>
             <a 
               href="https://www.instagram.com/moji_ailife" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="hover:text-white transition-colors"
             >
-              Instagram
+              Instagram @moji_ailife
             </a>
           </div>
         </div>

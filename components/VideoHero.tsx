@@ -17,7 +17,7 @@ export default function VideoHero({ title, subtitle, videoUrl, winnerName, winne
         {/* 左側：文案與懶人包結論 */}
         <div className="flex-1 text-center lg:text-left">
           <div className="inline-flex items-center rounded-full px-3 py-1 text-sm font-semibold text-blue-700 bg-blue-50 mb-6 border border-blue-200">
-            🏆 Winner Revealed: {winnerName}
+            🏆 推薦工具：{winnerName}
           </div>
           <h1 className="text-4xl sm:text-5xl font-extrabold text-slate-900 tracking-tight mb-4">
             {title}
@@ -31,10 +31,10 @@ export default function VideoHero({ title, subtitle, videoUrl, winnerName, winne
             rel="noopener noreferrer"
             className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-8 py-4 text-lg font-bold text-white shadow-md hover:bg-blue-500 hover:shadow-lg transition-all"
           >
-            Try {winnerName} for Free 🚀
+            免費試用 {winnerName} 🚀
           </Link>
           <p className="mt-3 text-sm text-slate-400">
-            *Includes our exclusive partner discount.
+            *透過此連結可享有專屬合作優惠。
           </p>
         </div>
 
@@ -53,7 +53,7 @@ export default function VideoHero({ title, subtitle, videoUrl, winnerName, winne
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M14.752 11.168l-3.197-2.132A1 1 0 0010 9.87v4.263a1 1 0 001.555.832l3.197-2.132a1 1 0 000-1.664z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
               </svg>
-              <span>Video Placement (IG Reel / YT Short)</span>
+              <span>影片展示區（IG Reel / YT Short）</span>
             </div>
           )}
         </div>
