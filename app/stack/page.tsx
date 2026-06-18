@@ -5,7 +5,7 @@ export default async function StackPage() {
   const allTools = await getSaaSTools();
   
   const stackTools = allTools.filter((tool) => 
-    tool.category.some(c => ['Stack', 'Automation', 'Productivity', 'Project Management', 'Identity Protection'].includes(c))
+    tool.category.some(c => ['Stack', 'Automation', 'Productivity', 'Project Management'].includes(c))
   );
 
   return (
@@ -53,13 +53,3 @@ export default async function StackPage() {
                 {tool.slug && (
                   <Link href={`/comparisons/${tool.slug}`} className="text-center text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors py-1">
                     查看比較評測 →
-                  </Link>
-                )}
-              </div>
-            </div>
-          ))}
-        </div>
-      </div>
-    </div>
-  );
-}
