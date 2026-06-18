@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { getSaaSTools } from '@/lib/notion';
 import Link from 'next/link';
 
