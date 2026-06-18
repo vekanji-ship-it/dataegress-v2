@@ -1,9 +1,9 @@
-// app/comparisons/[slug]/page.tsx
 import { getSaaSTools, getNotionPageContent } from '@/lib/notion';
 import SchemaInjector from '@/components/SchemaInjector';
 import VideoHero from '@/components/VideoHero';
 import ComparisonTable from '@/components/ComparisonTable';
-import ReactMarkdown from 'react-markdown'; 
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 
 const competitorData: Record<string, any> = {
@@ -135,7 +135,6 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     })
   };
 
-  // 分類路由（繁中）
   let backLink = "/scale";
   let backCategoryName = "上手實作";
   let backColor = "hover:text-orange-600";
@@ -149,43 +148,8 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     backLink = "/build"; backCategoryName = "選對工具"; backColor = "hover:text-fuchsia-600";
   } else if (categories.includes('Newsletter') || categories.includes('AI') || categories.includes('Marketing')) {
     backLink = "/scale"; backCategoryName = "上手實作"; backColor = "hover:text-orange-600";
-  } else if (categories.includes('Security') || categories.includes('VPN') || categories.includes('Privacy')) {
-    backLink = "/protect"; backCategoryName = "認識工具"; backColor = "hover:text-emerald-600";
   }
 
   return (
     <>
-      <SchemaInjector data={{}} />
-      <article className="min-h-screen bg-slate-50 pb-20">
-        <div className="max-w-7xl mx-auto px-4 pt-8">
-          <Link href={backLink} className={`inline-flex items-center text-sm font-medium text-slate-500 transition-colors ${backColor}`}>
-            ← 回到{backCategoryName}
-          </Link>
-        </div>
-
-        <VideoHero 
-          title={`${productA.name} vs ${productB.name}`}
-          subtitle={productA_Notion.tagline || `我們實際測試了兩個工具，以下是為什麼推薦 ${productA.name}。`}
-          winnerName={productA.name}
-          winnerUrl={productA.url}
-          videoUrl={productA_Notion.videoUrl || undefined} 
-        />
-
-        <ComparisonTable productA={productA} productB={productB} />
-        
-        <div className="max-w-3xl mx-auto px-4 mt-12">
-          {markdownContent ? (
-            <div className="prose prose-slate prose-blue lg:prose-xl text-slate-700 max-w-none">
-              <ReactMarkdown>{markdownContent}</ReactMarkdown>
-            </div>
-          ) : (
-            <div className="prose prose-slate lg:prose-xl text-slate-700 text-center">
-              <h2 className="text-3xl font-bold mb-6 text-slate-900">為什麼推薦 {productA.name}</h2>
-              <p>根據我們的實際測試，{productA.name} 是目前最適合上班族和學生的選擇。</p>
-            </div>
-          )}
-        </div>
-      </article>
-    </>
-  );
-}
+      <SchemaInjector
