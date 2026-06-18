@@ -1,4 +1,3 @@
-// app/comparisons/[slug]/page.tsx
 import { getSaaSTools, getNotionPageContent } from '@/lib/notion';
 import SchemaInjector from '@/components/SchemaInjector';
 import VideoHero from '@/components/VideoHero';
@@ -7,8 +6,10 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import Link from 'next/link';
 
+export const dynamic = 'force-dynamic';
+
 const competitorData: Record<string, any> = {
-  "beehiiv-review": {
+  "beehiiv-review-zh": {
     name: "Substack",
     price: "免費（抽成 10%）",
     url: "https://substack.com",
@@ -19,7 +20,7 @@ const competitorData: Record<string, any> = {
       { name: "內建推薦機制", included: false },
     ]
   },
-  "make-review": {
+  "make-review-zh": {
     name: "Zapier",
     price: "From $19.99/mo",
     url: "https://zapier.com",
@@ -30,7 +31,7 @@ const competitorData: Record<string, any> = {
       { name: "亞洲社群支援", included: false },
     ]
   },
-  "framer-review": {
+  "framer-review-zh": {
     name: "Webflow",
     price: "From $14/mo",
     url: "https://webflow.com",
@@ -41,18 +42,18 @@ const competitorData: Record<string, any> = {
       { name: "免費方案可用", included: true },
     ]
   },
-  "notion-vs-clickup": {
-    name: "ClickUp",
-    price: "From $7/mo",
-    url: "https://clickup.com",
+  "notion-review-zh": {
+    name: "Obsidian",
+    price: "免費",
+    url: "https://obsidian.md",
     features: [
       { name: "資料庫功能", included: false },
       { name: "AI 功能內建", included: false },
-      { name: "介面簡潔", included: false },
+      { name: "支援團隊協作", included: false },
       { name: "免費方案完整", included: true },
     ]
   },
-  "hostinger-review": {
+  "hostinger-review-zh": {
     name: "Bluehost",
     price: "From $2.95/mo",
     url: "https://www.bluehost.com",
@@ -63,7 +64,7 @@ const competitorData: Record<string, any> = {
       { name: "續約價格穩定", included: false },
     ]
   },
-  "canva-review": {
+  "canva-review-zh": {
     name: "Adobe Express",
     price: "Free / $9.99/mo",
     url: "https://www.adobe.com/express",
@@ -74,7 +75,7 @@ const competitorData: Record<string, any> = {
       { name: "台灣用戶熟悉", included: false },
     ]
   },
-  "gamma-review": {
+  "gamma-review-zh": {
     name: "Google Slides",
     price: "免費",
     url: "https://slides.google.com",
@@ -136,7 +137,6 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     })
   };
 
-  // 分類路由（繁中）
   let backLink = "/scale";
   let backCategoryName = "上手實作";
   let backColor = "hover:text-orange-600";
@@ -150,8 +150,6 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     backLink = "/build"; backCategoryName = "選對工具"; backColor = "hover:text-fuchsia-600";
   } else if (categories.includes('Newsletter') || categories.includes('AI') || categories.includes('Marketing')) {
     backLink = "/scale"; backCategoryName = "上手實作"; backColor = "hover:text-orange-600";
-  } else if (categories.includes('Security') || categories.includes('VPN') || categories.includes('Privacy')) {
-    backLink = "/protect"; backCategoryName = "認識工具"; backColor = "hover:text-emerald-600";
   }
 
   return (
@@ -164,16 +162,16 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
           </Link>
         </div>
 
-        <VideoHero 
+        <VideoHero
           title={`${productA.name} vs ${productB.name}`}
           subtitle={productA_Notion.tagline || `我們實際測試了兩個工具，以下是為什麼推薦 ${productA.name}。`}
           winnerName={productA.name}
           winnerUrl={productA.url}
-          videoUrl={productA_Notion.videoUrl || undefined} 
+          videoUrl={productA_Notion.videoUrl || undefined}
         />
 
         <ComparisonTable productA={productA} productB={productB} />
-        
+
         <div className="max-w-3xl mx-auto px-4 mt-12">
           {markdownContent ? (
             <div className="prose prose-slate prose-blue lg:prose-xl text-slate-700 max-w-none">
