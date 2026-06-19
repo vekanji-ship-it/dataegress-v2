@@ -86,6 +86,28 @@ const competitorData: Record<string, any> = {
       { name: "學習成本極低", included: false },
     ]
   },
+  "perplexity-review-zh": {
+    name: "Google 搜尋",
+    price: "免費",
+    url: "https://www.google.com",
+    features: [
+      { name: "整理過的單一答案", included: false },
+      { name: "附引用來源", included: false },
+      { name: "即時網路搜尋", included: true },
+      { name: "免去點開多個分頁", included: false },
+    ]
+  },
+  "claude-review-zh": {
+    name: "ChatGPT",
+    price: "Free / $20/mo",
+    url: "https://chatgpt.com",
+    features: [
+      { name: "長文件理解穩定", included: false },
+      { name: "程式協助能力強", included: true },
+      { name: "外掛生態系豐富", included: true },
+      { name: "回答較少亂編內容", included: false },
+    ]
+  },
 };
 
 export default async function ComparisonArticle({ params }: { params: Promise<{ slug: string }> }) {
@@ -148,6 +170,8 @@ export default async function ComparisonArticle({ params }: { params: Promise<{ 
     backLink = "/stack"; backCategoryName = "自動化串接"; backColor = "hover:text-blue-600";
   } else if (categories.includes('Web Design') || categories.includes('Hosting')) {
     backLink = "/build"; backCategoryName = "選對工具"; backColor = "hover:text-fuchsia-600";
+  } else if (categories.includes('Security') || categories.includes('VPN') || categories.includes('Privacy') || categories.includes('Password Manager')) {
+    backLink = "/protect"; backCategoryName = "認識工具"; backColor = "hover:text-emerald-600";
   } else if (categories.includes('Newsletter') || categories.includes('AI') || categories.includes('Marketing')) {
     backLink = "/scale"; backCategoryName = "上手實作"; backColor = "hover:text-orange-600";
   }
