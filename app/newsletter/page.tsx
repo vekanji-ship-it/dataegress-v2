@@ -1,42 +1,60 @@
-// app/newsletter/page.tsx
 export default function NewsletterPage() {
   return (
-    <div className="relative isolate flex items-center justify-center min-h-[80vh] px-4 sm:px-6 lg:px-8 py-20 overflow-hidden">
+    <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center py-20 px-4">
       
-      {/* 🌟 背景光暈特效 (深邃藍色調，象徵專業與隱私) */}
-      <div className="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80" aria-hidden="true">
-        <div className="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#3b82f6] to-[#1e3a8a] opacity-20 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]" style={{ clipPath: 'polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)' }}></div>
-      </div>
-
-      <div className="max-w-3xl mx-auto text-center z-10">
-        <div className="inline-flex items-center rounded-full px-4 py-1.5 text-sm font-semibold text-blue-700 bg-blue-50 mb-6 border border-blue-200 shadow-sm">
-          💌 Join 1,000+ Solopreneurs & Digital Nomads
+      <div className="text-center mb-12 max-w-2xl">
+        <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-bold mb-6">
+          每週一封，免費訂閱
         </div>
-        
-        <h1 className="text-5xl sm:text-6xl font-extrabold tracking-tight text-slate-900 mb-6 leading-tight">
-          Master Your <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-indigo-600">Digital Sovereignty</span>
+        <h1 className="text-4xl md:text-5xl font-extrabold text-slate-900 mb-6 leading-tight">
+          Kmoji 電子報
         </h1>
-        
-        <p className="text-xl text-slate-600 mb-10 leading-relaxed max-w-2xl mx-auto">
-          Get weekly insights on privacy tools, SaaS marketing automation, and strategies to scale your digital empire. Zero fluff. No spam.
-        </p>
-
-        {/* 🌟 Beehiiv 嵌入表單區塊 */}
-        <div className="bg-white p-2 rounded-2xl shadow-xl border border-slate-200 max-w-lg mx-auto transform hover:scale-[1.02] transition-transform duration-300">
-          <iframe 
-            src="https://subscribe-forms.beehiiv.com/066502fb-90a9-4c4b-bbfc-bc97cc4eed96" 
-            data-test-id="beehiiv-embed" 
-            height="300" 
-            frameBorder="0" 
-            scrolling="no" 
-            style={{ margin: 0, borderRadius: '0px', backgroundColor: 'transparent', width: '100%' }}
-          ></iframe>
-        </div>
-        
-        <p className="text-sm text-slate-500 mt-6 flex items-center justify-center gap-2">
-          <span>🔒</span> 100% Secure. Unsubscribe anytime.
+        <p className="text-xl text-slate-600 leading-relaxed">
+          每週分享一個 AI 工具的真實用法，包含踩坑紀錄和實際設定步驟。
+          <br className="hidden md:block" />
+          適合上班族和學生，不賣神話，只說真實。
         </p>
       </div>
+
+      <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-200 p-8 md:p-10">
+        
+        <div className="space-y-4 mb-8">
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">📬</span>
+            <div>
+              <p className="font-bold text-slate-900">每週一封</p>
+              <p className="text-slate-500 text-sm">固定週間發送，不騷擾</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">🛠️</span>
+            <div>
+              <p className="font-bold text-slate-900">真實工具測試</p>
+              <p className="text-slate-500 text-sm">我用過才寫，包含失敗的部分</p>
+            </div>
+          </div>
+          <div className="flex items-start gap-3">
+            <span className="text-2xl">🎯</span>
+            <div>
+              <p className="font-bold text-slate-900">上班族視角</p>
+              <p className="text-slate-500 text-sm">不是給工程師看的，是給一般人看的</p>
+            </div>
+          </div>
+        </div>
+
+        <iframe
+          src="https://embeds.beehiiv.com/a5bbe09e-c783-4936-a2c0-40e680e8ea4d"
+          data-test-id="beehiiv-embed"
+          width="100%"
+          height="180"
+          style={{ borderRadius: '8px', border: '0' }}
+        />
+
+        <p className="text-center text-xs text-slate-400 mt-4">
+          免費訂閱，隨時可以取消
+        </p>
+      </div>
+
     </div>
   );
 }
