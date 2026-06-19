@@ -1,7 +1,9 @@
+import Script from 'next/script';
+
 export default function NewsletterPage() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col items-center justify-center py-20 px-4">
-      
+
       <div className="text-center mb-12 max-w-2xl">
         <div className="inline-flex items-center gap-2 bg-blue-50 text-blue-600 px-4 py-2 rounded-full text-sm font-bold mb-6">
           每週一封，免費訂閱
@@ -17,7 +19,7 @@ export default function NewsletterPage() {
       </div>
 
       <div className="w-full max-w-md bg-white rounded-3xl shadow-xl border border-slate-200 p-8 md:p-10">
-        
+
         <div className="space-y-4 mb-8">
           <div className="flex items-start gap-3">
             <span className="text-2xl">📬</span>
@@ -42,12 +44,12 @@ export default function NewsletterPage() {
           </div>
         </div>
 
-        <iframe
-          src="https://embeds.beehiiv.com/a5bbe09e-c783-4936-a2c0-40e680e8ea4d"
-          data-test-id="beehiiv-embed"
-          width="100%"
-          height="180"
-          style={{ borderRadius: '8px', border: '0' }}
+        <div data-beehiiv-form="2a02bb9d-c0ad-462b-84c4-2b5ba5dc159b"></div>
+        <Script
+          async
+          src="https://subscribe-forms.beehiiv.com/v3/loader.js"
+          data-beehiiv-form="2a02bb9d-c0ad-462b-84c4-2b5ba5dc159b"
+          strategy="afterInteractive"
         />
 
         <p className="text-center text-xs text-slate-400 mt-4">
