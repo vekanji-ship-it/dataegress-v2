@@ -44,13 +44,9 @@ export default function NewsletterPage() {
           </div>
         </div>
 
-        <div data-beehiiv-form="2a02bb9d-c0ad-462b-84c4-2b5ba5dc159b"></div>
-        <Script
-          async
-          src="https://subscribe-forms.beehiiv.com/v3/loader.js"
-          data-beehiiv-form="2a02bb9d-c0ad-462b-84c4-2b5ba5dc159b"
-          strategy="afterInteractive"
-        />
+        <div className="beehiiv-embed" data-beehiiv-form="2a02bb9d-c0ad-462b-84c4-2b5ba5dc159b">
+  <script async src="https://subscribe-forms.beehiiv.com/v3/loader.js"></script>
+</div>
 
         <p className="text-center text-xs text-slate-400 mt-4">
           免費訂閱，隨時可以取消
